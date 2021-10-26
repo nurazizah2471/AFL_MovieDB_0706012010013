@@ -1,3 +1,16 @@
 <resources>
-    <string name="app_name">AFL_MovieDB_0706012010013</string>
+    <string name="app_name">MovieDB</string>
+    <string name="overview">Overview</string>
+    <string name="releaseDate">Released</string>
+    <string name="genre">Genre</string>
+    <string name="popularity">Popularity</string>
+    <string name="voteCount">Rating</string>
+    <string name="voteAverage">Vote Average</string>
+    <string name="originalTitle">Original Title</string>
+    <string name="originalLanguage">Original Language</string>
+    <string name="nonValue">-</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="up_coming">Up Coming</string>
 </resources>
