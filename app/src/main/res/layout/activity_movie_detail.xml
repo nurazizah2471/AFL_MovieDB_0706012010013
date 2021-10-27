@@ -4,8 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#052461"
-    tools:context=".views.activities.movieDetail_activity">
+    android:background="#052461">
+
+
+    <ProgressBar
+        android:id="@+id/progressBar_MoviesDetailsFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/progressdialogshape"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,21 +29,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ConstraintLayout_MovieDetailsFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar_movie_detail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#04146C"
-                android:minHeight="?attr/actionBarSize"
-                android:theme="?attr/actionBarTheme"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
-                app:titleTextColor="#FAE001" />
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/bc_Path"
@@ -38,17 +40,17 @@
                 android:layout_height="200dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar_movie_detail"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_launcher_foreground" />
 
             <ImageView
                 android:id="@+id/posterPath_movie_detail"
                 android:layout_width="130dp"
                 android:layout_height="150dp"
-                android:layout_marginTop="130dp"
+                android:layout_marginTop="150dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar_movie_detail"
+                app:layout_constraintTop_toTopOf="@+id/bc_Path"
                 app:srcCompat="@drawable/ic_launcher_foreground" />
 
             <TextView
@@ -274,13 +276,31 @@
                         android:id="@+id/rv_genre_movieDetail"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="@id/textView10"
                         app:layout_constraintStart_toStartOf="@id/textView10"
                         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
+                    <TextView
+                        android:id="@+id/textView11"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:text="@string/productioncompanies"
+                        android:textColor="#0C0C0C"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@+id/textView2"
+                        app:layout_constraintTop_toBottomOf="@+id/rv_genre_movieDetail" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_productioncompanies_movieDetail"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="@id/textView10"
+                        app:layout_constraintStart_toStartOf="@id/textView11"
+                        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,7 +9,9 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.afl_moviedb_0706012010013.models.Movies;
 import com.example.afl_moviedb_0706012010013.models.NowPlaying;
+import com.example.afl_moviedb_0706012010013.models.UpComing;
 import com.example.afl_moviedb_0706012010013.repositories.MovieRepository;
+
 public class MovieViewModel extends AndroidViewModel {
 
     private MovieRepository movieRepository;
@@ -32,13 +34,28 @@ public class MovieViewModel extends AndroidViewModel {
 
 
     //==Begin of viewModel to getnowplaying
+
     private MutableLiveData<NowPlaying> resultGetNowPlaying = new MutableLiveData<>();
 
-    public void getNowPlaying(){
-        resultGetNowPlaying = movieRepository.getNowPlaying();
+    public void getNowPlaying(int page){
+       resultGetNowPlaying=movieRepository.getNowPlaying(page);
+
     }
     public LiveData<NowPlaying> getResultGetNowPlaying(){
         return resultGetNowPlaying;
     }
     //==End of viewModel to getnowplaying
+
+    //==Begin of viewModel to getupcoming
+
+    private MutableLiveData<UpComing> resultGetUpComing = new MutableLiveData<>();
+
+    public void getUpComing(int page){
+        resultGetUpComing=movieRepository.getUpComing(page);
+
+    }
+    public LiveData<UpComing> getResultGetUpComing(){
+        return resultGetUpComing;
+    }
+    //==End of viewModel to getupcoming
 }

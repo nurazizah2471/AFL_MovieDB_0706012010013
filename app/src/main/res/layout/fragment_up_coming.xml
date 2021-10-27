@@ -6,14 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".views.fragments.UpComingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_upcoming_f"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/up_coming"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_upComingFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+
+        android:indeterminateDrawable="@drawable/progressdialogshape"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_upcoming_f" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

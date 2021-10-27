@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.afl_moviedb_0706012010013.helpers.Const;
 import com.example.afl_moviedb_0706012010013.models.Movies;
 import com.example.afl_moviedb_0706012010013.models.NowPlaying;
+import com.example.afl_moviedb_0706012010013.models.UpComing;
 import com.example.afl_moviedb_0706012010013.retrofit.ApiService;
 
 import retrofit2.Call;
@@ -43,11 +44,11 @@ public class MovieRepository {
         return result;
     }
 
-    public MutableLiveData<NowPlaying> getNowPlaying() {
+    public MutableLiveData<NowPlaying> getNowPlaying(int page) {
 
         final MutableLiveData<NowPlaying> result = new MutableLiveData<>();
 
-        ApiService.endpoint().getNowPlaying(Const.API_KEY).enqueue(new Callback<NowPlaying>() {
+        ApiService.endpoint().getNowPlaying(page, Const.API_KEY).enqueue(new Callback<NowPlaying>() {
 
             @Override
             public void onResponse(Call<NowPlaying> call, Response<NowPlaying> response) {
@@ -56,6 +57,25 @@ public class MovieRepository {
 
             @Override
             public void onFailure(Call<NowPlaying> call, Throwable t) {
+
+            }
+        });
+        return result;
+    }
+
+    public MutableLiveData<UpComing> getUpComing(int page) {
+
+        final MutableLiveData<UpComing> result = new MutableLiveData<>();
+
+        ApiService.endpoint().getUpComing(page, Const.API_KEY).enqueue(new Callback<UpComing>() {
+
+            @Override
+            public void onResponse(Call<UpComing> call, Response<UpComing> response) {
+                result.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<UpComing> call, Throwable t) {
 
             }
         });

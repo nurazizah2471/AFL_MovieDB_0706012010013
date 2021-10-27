@@ -16,17 +16,30 @@
     </fragment>
     <fragment
         android:id="@+id/movieDetailFragment"
-        android:name="com.example.afl_moviedb_0706012010013.views.fragments.MovieDetailFragment"
+        android:name="com.example.afl_moviedb_0706012010013.views.fragments.MovieDetailsFragment"
         android:label=""
         tools:layout="@layout/fragment_movie_detail" >
         <argument
             android:name="movieId"
             app:argType="string"
             android:defaultValue="null" />
+        <action
+            android:id="@+id/action_movieDetailFragment_to_nowPlayingFragment"
+            app:destination="@id/nowPlayingFragment" />
+        <action
+            android:id="@+id/action_movieDetailFragment_to_upComingFragment"
+            app:destination="@id/upComingFragment" />
+        <argument
+            android:name="fromFragment"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/upComingFragment"
         android:name="com.example.afl_moviedb_0706012010013.views.fragments.UpComingFragment"
         android:label="@string/up_coming"
-        tools:layout="@layout/fragment_up_coming" />
+        tools:layout="@layout/fragment_up_coming">
+        <action
+            android:id="@+id/action_upComingFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+    </fragment>
 </navigation>

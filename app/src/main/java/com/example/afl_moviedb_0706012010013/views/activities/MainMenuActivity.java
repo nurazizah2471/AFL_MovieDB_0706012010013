@@ -1,4 +1,4 @@
-package com.example.afl_moviedb_0706012010013.views;
+package com.example.afl_moviedb_0706012010013.views.activities;
 
 import android.os.Bundle;
 
@@ -28,7 +28,6 @@ public class MainMenuActivity extends AppCompatActivity {
 
         AppBarConfiguration appBarConfiguration=new AppBarConfiguration.Builder(R.id.nowPlayingFragment,
                 R.id.upComingFragment).build();
-
 
         NavigationUI.setupActionBarWithNavController(this, nav_fragment_main_menu.getNavController(), appBarConfiguration);
         NavigationUI.setupWithNavController(bottomNavigationView, nav_fragment_main_menu.getNavController());
