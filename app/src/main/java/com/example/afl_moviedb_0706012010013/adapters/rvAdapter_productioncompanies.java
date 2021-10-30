@@ -1,8 +1,6 @@
 package com.example.afl_moviedb_0706012010013.adapters;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +16,13 @@ import com.example.afl_moviedb_0706012010013.models.Movies;
 
 import java.util.List;
 
-public class rvAdapter_productioncompanies_movieDetail extends RecyclerView.Adapter<rvAdapter_productioncompanies_movieDetail
+public class rvAdapter_productioncompanies extends RecyclerView.Adapter<rvAdapter_productioncompanies
         .rvAdapter_productioncompaniesFragment_movieDetailHolder> {
 
     private List<Movies.ProductionCompanies> listproductioncompanies;
     private Context context;
 
-    private List<Movies.ProductionCompanies> getListproductioncompanies(){
+    public List<Movies.ProductionCompanies> getListproductioncompanies(){
         return listproductioncompanies;
     }
 
@@ -32,7 +30,7 @@ public class rvAdapter_productioncompanies_movieDetail extends RecyclerView.Adap
         this.listproductioncompanies=listproductioncompanies;
     }
 
-    public rvAdapter_productioncompanies_movieDetail(Context context){
+    public rvAdapter_productioncompanies(Context context){
         this.context=context;
     }
     @NonNull
@@ -50,7 +48,7 @@ public class rvAdapter_productioncompanies_movieDetail extends RecyclerView.Adap
                     .load(Const.IMAGE_PATH + resultsProductionCompanies.getLogo_path())
                     .into(holder.productioncompanies_photo);
         }else{
-            holder.productioncompanies_photo.setImageResource(R.drawable.ic_launcher_background);
+            holder.productioncompanies_photo.setImageResource(R.drawable.logodefaultproductioncompanies);
         }
     }
 

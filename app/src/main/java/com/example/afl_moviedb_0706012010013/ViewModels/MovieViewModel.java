@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.afl_moviedb_0706012010013.models.Credit;
 import com.example.afl_moviedb_0706012010013.models.Movies;
 import com.example.afl_moviedb_0706012010013.models.NowPlaying;
 import com.example.afl_moviedb_0706012010013.models.TrendingMovies;
@@ -85,4 +86,17 @@ public class MovieViewModel extends AndroidViewModel {
         return resultGetTrendingWeekMovies;
     }
     //==End of viewModel to getTrendingWeekMovies
+
+    //==Begin of viewModel to getCreditMovies
+
+    private MutableLiveData<Credit> resultGetCreditMovies = new MutableLiveData<>();
+
+    public void getCreditMovies(String movieId){
+        resultGetCreditMovies=movieRepository.getMovieCredit(movieId);
+
+    }
+    public LiveData<Credit> getResultGetCreditMovies(){
+        return resultGetCreditMovies;
+    }
+    //==End of viewModel to getCreditMovies
 }

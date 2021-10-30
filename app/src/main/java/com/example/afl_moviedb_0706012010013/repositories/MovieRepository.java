@@ -3,6 +3,7 @@ package com.example.afl_moviedb_0706012010013.repositories;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.afl_moviedb_0706012010013.helpers.Const;
+import com.example.afl_moviedb_0706012010013.models.Credit;
 import com.example.afl_moviedb_0706012010013.models.Movies;
 import com.example.afl_moviedb_0706012010013.models.NowPlaying;
 import com.example.afl_moviedb_0706012010013.models.TrendingMovies;
@@ -99,6 +100,22 @@ public class MovieRepository {
                 }
             });
             return result;
+    }
 
+    public MutableLiveData<Credit> getMovieCredit(String movie_id) {
+        final MutableLiveData<Credit> result = new MutableLiveData<>();
+
+        ApiService.endpoint().getMoviesCredit(Integer.parseInt(movie_id), Const.API_KEY).enqueue(new Callback<Credit>() {
+            @Override
+            public void onResponse(Call<Credit> call, Response<Credit> response) {
+                result.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Credit> call, Throwable t) {
+
+            }
+        });
+        return result;
     }
 }

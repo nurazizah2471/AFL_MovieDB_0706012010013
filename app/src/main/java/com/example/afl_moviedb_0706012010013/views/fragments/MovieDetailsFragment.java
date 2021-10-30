@@ -21,15 +21,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.afl_moviedb_0706012010013.R;
 import com.example.afl_moviedb_0706012010013.ViewModels.MovieViewModel;
-import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_genres_movieDetail;
+import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_genres;
 import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_nowPlaying;
-import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_productioncompanies_movieDetail;
+import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_peopleCreditMovie;
+import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_productioncompanies;
 import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_upComing;
 import com.example.afl_moviedb_0706012010013.helpers.Const;
 import com.example.afl_moviedb_0706012010013.helpers.ItemClickSupport;
+import com.example.afl_moviedb_0706012010013.models.Credit;
 import com.example.afl_moviedb_0706012010013.models.Movies;
-
-import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,10 +82,13 @@ public class MovieDetailsFragment extends Fragment {
             voteCount_movie_detail, overviewText_movieDetails, originalTitle_movieDetail, originalLanguage_movieDetail,
             tagline_movie_detail;
     private ImageView posterPath_movie_detail, bc_Path;
-    private RecyclerView rv_genre_movieDetail, rv_productioncompanies_movieDetail;
+    private RecyclerView rv_genre_movieDetail, rv_productioncompanies_movieDetail, rv_profileCast_movieDetail;
     private MovieViewModel movieViewModel;
     private ProgressBar progressBar;
     private ConstraintLayout mainContent;
+    private rvAdapter_genres adapter_genres;
+    private rvAdapter_productioncompanies adapterProductionCompanies;
+    private rvAdapter_peopleCreditMovie adapterPeopleCreditMovie;
 
     private rvAdapter_nowPlaying rvAdapter_nowPlaying;
     private rvAdapter_upComing rvAdapter_upComing;
@@ -103,6 +106,11 @@ public class MovieDetailsFragment extends Fragment {
 
         movieViewModel.getMovieById(movieId);
         movieViewModel.getResultGetMovieById().observe(getActivity(), showResultMovieinDetail);
+
+        movieViewModel.getCreditMovies(movieId);
+        movieViewModel.getResultGetCreditMovies().observe(getActivity(), showResultCreditMovies);
+
+        addItemClickSupport();
         return view;
     }
 
@@ -126,8 +134,17 @@ public class MovieDetailsFragment extends Fragment {
 
             setRV(movies);
 
-            progressBar.setVisibility(View.GONE); // Hide Progress bar
-            mainContent.setVisibility(View.VISIBLE);
+           // progressBar.setVisibility(View.GONE); // Hide Progress bar
+            //mainContent.setVisibility(View.VISIBLE);
+        }
+    };
+
+
+    private Observer<Credit> showResultCreditMovies = new Observer<Credit>() {
+        @Override
+        public void onChanged(Credit Creditmovies) {
+
+            setRv_profileCast_movieDetail(Creditmovies);
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -136,11 +153,9 @@ public class MovieDetailsFragment extends Fragment {
                 }
             }, 200);
             mainContent.setVisibility(View.VISIBLE);
-
-            addItemClickSupport(movies);
-
         }
     };
+
     private void inisialisasi(View view) {
         title_movie_detail=view.findViewById(R.id.title_movie_detail);
         release_detail_movie=view.findViewById(R.id.release_detail_movie);
@@ -157,6 +172,7 @@ public class MovieDetailsFragment extends Fragment {
         rv_productioncompanies_movieDetail=view.findViewById(R.id.rv_productioncompanies_movieDetail);
         progressBar = view.findViewById(R.id.progressBar_MoviesDetailsFragment); // Get ProgressBar reference
         mainContent = view.findViewById(R.id.ConstraintLayout_MovieDetailsFragment);
+        rv_profileCast_movieDetail=view.findViewById(R.id.rv_profileCast_movieDetail);
 
         movieViewModel=new ViewModelProvider(getActivity()).get(MovieViewModel.class);
     }
@@ -188,27 +204,43 @@ public class MovieDetailsFragment extends Fragment {
         setRV_ProductionCompanies(movies);
     }
 
+    private void setRv_profileCast_movieDetail(Credit credit){
+        rv_profileCast_movieDetail.setLayoutManager(new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.HORIZONTAL, false));
+        adapterPeopleCreditMovie = new rvAdapter_peopleCreditMovie(getActivity());
+        adapterPeopleCreditMovie.setListpeopleCreditMovieAdapter(credit.getCast());
+        rv_profileCast_movieDetail.setAdapter(adapterPeopleCreditMovie);
+    }
+
+
     private void setRV_Genre(Movies movies) {
         rv_genre_movieDetail.setLayoutManager(new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.HORIZONTAL, false));
-        rvAdapter_genres_movieDetail adapter = new rvAdapter_genres_movieDetail(getActivity());
-        adapter.setListGenresAdapter(movies.getGenres());
-        rv_genre_movieDetail.setAdapter(adapter);
+        adapter_genres = new rvAdapter_genres(getActivity());
+        adapter_genres.setListGenresAdapter(movies.getGenres());
+        rv_genre_movieDetail.setAdapter(adapter_genres);
     }
 
     private void setRV_ProductionCompanies(Movies movies) {
         rv_productioncompanies_movieDetail.setLayoutManager(new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.HORIZONTAL, false));
-        rvAdapter_productioncompanies_movieDetail adapterProductionCompanies = new rvAdapter_productioncompanies_movieDetail(getActivity());
+        adapterProductionCompanies = new rvAdapter_productioncompanies(getActivity());
         adapterProductionCompanies.setListproductioncompaniesAdapter(movies.getProduction_companies());
         rv_productioncompanies_movieDetail.setAdapter(adapterProductionCompanies);
     }
 
-    private void addItemClickSupport(Movies movies){
+    private void addItemClickSupport(){
         ItemClickSupport.addTo(rv_productioncompanies_movieDetail).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                Toast.makeText(getActivity(), movies.getProduction_companies().get(position).getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), adapterProductionCompanies.getListproductioncompanies().get(position).getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        ItemClickSupport.addTo(rv_profileCast_movieDetail).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                Toast.makeText(getActivity(), adapterPeopleCreditMovie.getListpeopleCreditMovie().get(position).getName(), Toast.LENGTH_SHORT).show();
             }
         });
     }

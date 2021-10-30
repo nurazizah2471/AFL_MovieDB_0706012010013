@@ -14,7 +14,7 @@ import com.example.afl_moviedb_0706012010013.models.Movies;
 
 import java.util.List;
 
-public class rvAdapter_genres_movieDetail extends RecyclerView.Adapter<rvAdapter_genres_movieDetail
+public class rvAdapter_genres extends RecyclerView.Adapter<rvAdapter_genres
         .rvAdapter_genresFragment_movieDetailHolder> {
 
     private List<Movies.Genres> listGenres;
@@ -28,7 +28,7 @@ public class rvAdapter_genres_movieDetail extends RecyclerView.Adapter<rvAdapter
         this.listGenres=listGenres;
     }
 
-    public rvAdapter_genres_movieDetail(Context context){
+    public rvAdapter_genres(Context context){
         this.context=context;
     }
     @NonNull
@@ -39,7 +39,7 @@ public class rvAdapter_genres_movieDetail extends RecyclerView.Adapter<rvAdapter
     }
 
     @Override
-    public void onBindViewHolder(@NonNull rvAdapter_genres_movieDetail.rvAdapter_genresFragment_movieDetailHolder holder, int position) {
+    public void onBindViewHolder(@NonNull rvAdapter_genres.rvAdapter_genresFragment_movieDetailHolder holder, int position) {
         final Movies.Genres resultsGenre = getListGenres().get(position);
         holder.genre_fragment_movie_detail.setText(resultsGenre.getName());
     }

@@ -1,5 +1,6 @@
 package com.example.afl_moviedb_0706012010013.retrofit;
 
+import com.example.afl_moviedb_0706012010013.models.Credit;
 import com.example.afl_moviedb_0706012010013.models.Movies;
 import com.example.afl_moviedb_0706012010013.models.NowPlaying;
 import com.example.afl_moviedb_0706012010013.models.TrendingMovies;
@@ -36,4 +37,10 @@ public interface ApiEndPoint {
             @Path("time_window") String timeWindow,
             @Query("api_key") String apiKey
     );
+    @GET("movie/{movie_id}/credits")
+    Call<Credit> getMoviesCredit(
+            @Path("movie_id") int movieId,
+            @Query("api_key") String apiKey
+    );
+
 }
