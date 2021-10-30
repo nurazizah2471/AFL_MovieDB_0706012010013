@@ -2,6 +2,7 @@ package com.example.afl_moviedb_0706012010013.retrofit;
 
 import com.example.afl_moviedb_0706012010013.models.Movies;
 import com.example.afl_moviedb_0706012010013.models.NowPlaying;
+import com.example.afl_moviedb_0706012010013.models.TrendingMovies;
 import com.example.afl_moviedb_0706012010013.models.UpComing;
 
 import retrofit2.Call;
@@ -26,6 +27,13 @@ public interface ApiEndPoint {
     @GET("movie/upcoming")
     Call<UpComing> getUpComing(
             @Query("page") int page,
+            @Query("api_key") String apiKey
+    );
+
+    @GET("trending/{media_type}/{time_window}")
+    Call<TrendingMovies> getMoviesTrendingDay(
+            @Path("media_type") String mediaType,
+            @Path("time_window") String timeWindow,
             @Query("api_key") String apiKey
     );
 }

@@ -22,11 +22,14 @@ import com.bumptech.glide.Glide;
 import com.example.afl_moviedb_0706012010013.R;
 import com.example.afl_moviedb_0706012010013.ViewModels.MovieViewModel;
 import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_genres_movieDetail;
-import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_nowPlaying_movieDetail;
+import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_nowPlaying;
 import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_productioncompanies_movieDetail;
+import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_upComing;
 import com.example.afl_moviedb_0706012010013.helpers.Const;
 import com.example.afl_moviedb_0706012010013.helpers.ItemClickSupport;
 import com.example.afl_moviedb_0706012010013.models.Movies;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -76,13 +79,17 @@ public class MovieDetailsFragment extends Fragment {
     }
 
     private TextView title_movie_detail, release_detail_movie, popularity_detail_movie, voteAverage_movie_detail,
-            voteCount_movie_detail, overviewText_movieDetails, originalTitle_movieDetail, originalLanguage_movieDetail;
+            voteCount_movie_detail, overviewText_movieDetails, originalTitle_movieDetail, originalLanguage_movieDetail,
+            tagline_movie_detail;
     private ImageView posterPath_movie_detail, bc_Path;
     private RecyclerView rv_genre_movieDetail, rv_productioncompanies_movieDetail;
     private MovieViewModel movieViewModel;
     private ProgressBar progressBar;
     private ConstraintLayout mainContent;
-    private String fromFragment;
+
+    private rvAdapter_nowPlaying rvAdapter_nowPlaying;
+    private rvAdapter_upComing rvAdapter_upComing;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -93,26 +100,17 @@ public class MovieDetailsFragment extends Fragment {
 
 
         String movieId=getArguments().getString("movieId");
-        fromFragment=getArguments().getString("fromFragment");
-
 
         movieViewModel.getMovieById(movieId);
         movieViewModel.getResultGetMovieById().observe(getActivity(), showResultMovieinDetail);
-
-        onBackPress(view);
-
         return view;
     }
 
     private void onBackPress(View v) {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
-            public void handleOnBackPressed() {
-                if(fromFragment=="NowPlayingFragment"){
-                    Navigation.findNavController(v).navigate(R.id.action_movieDetailFragment_to_nowPlayingFragment);
-                }else{
-                    Navigation.findNavController(v).navigate(R.id.action_movieDetailFragment_to_upComingFragment);
-                }
+           public void handleOnBackPressed() {
+               getActivity().onBackPressed();
 
             }
         });
@@ -143,6 +141,7 @@ public class MovieDetailsFragment extends Fragment {
         voteCount_movie_detail=view.findViewById(R.id.voteCount_movie_detail);
         posterPath_movie_detail=view.findViewById(R.id.posterPath_movie_detail);
         overviewText_movieDetails=view.findViewById(R.id.overviewText_movieDetails);
+        tagline_movie_detail=view.findViewById(R.id.tagline_movie_detail);
         originalLanguage_movieDetail=view.findViewById(R.id.originalLanguage_movieDetail);
         bc_Path=view.findViewById(R.id.bc_Path);
         originalTitle_movieDetail=view.findViewById(R.id.originalTitle_movieDetail);
@@ -162,6 +161,7 @@ public class MovieDetailsFragment extends Fragment {
         overviewText_movieDetails.setText(movies.getOverview());
         originalTitle_movieDetail.setText("Original Title: "+movies.getOriginal_title());
         originalLanguage_movieDetail.setText(movies.getOriginal_language());
+        tagline_movie_detail.setText(movies.getTagline());
     }
 
     private void setImageView(Movies movies){

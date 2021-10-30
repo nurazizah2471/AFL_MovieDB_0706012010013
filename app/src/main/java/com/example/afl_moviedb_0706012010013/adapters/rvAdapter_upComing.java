@@ -18,7 +18,7 @@ import com.example.afl_moviedb_0706012010013.models.UpComing;
 import java.util.ArrayList;
 import java.util.List;
 
-public class rvAdapter_upComing_movieDetail extends RecyclerView.Adapter<rvAdapter_upComing_movieDetail.UpComingHolder> {
+public class rvAdapter_upComing extends RecyclerView.Adapter<rvAdapter_upComing.UpComingHolder> {
 
     private Context context;
     private List<UpComing.Results> listUpComing;
@@ -34,7 +34,7 @@ public class rvAdapter_upComing_movieDetail extends RecyclerView.Adapter<rvAdapt
         this.listUpComing=listUpComing;
     }
 
-    public rvAdapter_upComing_movieDetail(Context context) {
+    public rvAdapter_upComing(Context context) {
         this.context = context;
         this.listUpComing=new ArrayList<>();
     }
@@ -65,18 +65,21 @@ public class rvAdapter_upComing_movieDetail extends RecyclerView.Adapter<rvAdapt
 
     @Override
     public void onBindViewHolder(@NonNull UpComingHolder holder, int position) {
-        final UpComing.Results resultUpComing = getListUpComing().get(position);
 
         switch (getItemViewType(position)){
             case ITEM:
 
-                holder.title_nowplaying.setText(resultUpComing.getTitle());
-                holder.overview_listNowPlaying.setText(resultUpComing.getOverview());
-                holder.rating_nowplaying.setText(String.valueOf(resultUpComing.getVote_average()));
+                final UpComing.Results resultUpComing = getListUpComing().get(position);
+
+                holder.title_upcoming.setText(resultUpComing.getTitle());
+                holder.rating_upcoming.setText(String.valueOf(resultUpComing.getVote_average()));
 
                 Glide.with(context)
                         .load(Const.IMAGE_PATH +resultUpComing.getPoster_path())
-                        .into(holder.imagePoster_nowplaying);
+                        .into(holder.imagePoster_upcoming);
+
+                holder.releasedAt_upcoming.setText("Released At: " + resultUpComing.getRelease_date());
+                holder.popularity_upcoming.setText(resultUpComing.getPopularity()+" Popular");
                 break;
 
             case LOADING:
@@ -96,6 +99,7 @@ public class rvAdapter_upComing_movieDetail extends RecyclerView.Adapter<rvAdapt
 
     private void add(UpComing.Results upcoming){
         listUpComing.add(upcoming);
+        notifyItemInserted(getItemCount()-1);
     }
 
     public void addAll(List<UpComing.Results> listUpComingmove){
@@ -108,7 +112,6 @@ public class rvAdapter_upComing_movieDetail extends RecyclerView.Adapter<rvAdapt
         int position=listUpComing.indexOf(upcoming);
         if(position>-1){
             listUpComing.remove(position);
-            notifyItemRemoved(position);
         }
     }
 
@@ -117,6 +120,7 @@ public class rvAdapter_upComing_movieDetail extends RecyclerView.Adapter<rvAdapt
         while(getItemCount()>0){
             remove(getItem(0));
         }
+        notifyDataSetChanged();
     }
 
     public boolean isEmpty(){
@@ -136,7 +140,7 @@ public class rvAdapter_upComing_movieDetail extends RecyclerView.Adapter<rvAdapt
 
         if(results!=null){
             listUpComing.remove(position);
-            notifyItemRemoved(position);
+            notifyDataSetChanged();
         }
     }
 
@@ -146,16 +150,17 @@ public class rvAdapter_upComing_movieDetail extends RecyclerView.Adapter<rvAdapt
 
     public class UpComingHolder extends RecyclerView.ViewHolder {
 
-        TextView title_nowplaying, rating_nowplaying, overview_listNowPlaying;
-        ImageView imagePoster_nowplaying;
+        TextView title_upcoming, rating_upcoming, releasedAt_upcoming, popularity_upcoming;
+        ImageView imagePoster_upcoming;
 
         public UpComingHolder(@NonNull View itemView) {
             super(itemView);
 
-            title_nowplaying = itemView.findViewById(R.id.title_nowplaying);
-            rating_nowplaying = itemView.findViewById(R.id.rating_nowplaying);
-            imagePoster_nowplaying = itemView.findViewById(R.id.imagePoster_nowplaying);
-            overview_listNowPlaying=itemView.findViewById(R.id.overview_listNowPlaying);
+            title_upcoming = itemView.findViewById(R.id.title_nowplaying);
+            rating_upcoming = itemView.findViewById(R.id.rating_nowplaying);
+            imagePoster_upcoming = itemView.findViewById(R.id.imagePoster_nowplaying);
+            releasedAt_upcoming=itemView.findViewById(R.id.releasedAt_nowplaying);
+            popularity_upcoming=itemView.findViewById(R.id.popularity_nowplaying);
         }
     }
 

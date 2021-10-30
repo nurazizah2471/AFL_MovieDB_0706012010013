@@ -50,7 +50,7 @@ public class rvAdapter_productioncompanies_movieDetail extends RecyclerView.Adap
                     .load(Const.IMAGE_PATH + resultsProductionCompanies.getLogo_path())
                     .into(holder.productioncompanies_photo);
         }else{
-            holder.productioncompanies_photo.setImageResource(R.drawable.ic_baseline_productioncompanieslogodefault_filter_24);
+            holder.productioncompanies_photo.setImageResource(R.drawable.ic_launcher_background);
         }
     }
 

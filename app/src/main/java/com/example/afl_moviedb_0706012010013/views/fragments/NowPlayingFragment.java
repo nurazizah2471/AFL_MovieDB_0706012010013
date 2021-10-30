@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -16,12 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.afl_moviedb_0706012010013.R;
 import com.example.afl_moviedb_0706012010013.ViewModels.MovieViewModel;
-import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_nowPlaying_movieDetail;
+import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_nowPlaying_TrendingDay;
+import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_nowPlaying_TrendingWeek;
+import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_nowPlaying;
 import com.example.afl_moviedb_0706012010013.helpers.ItemClickSupport;
 import com.example.afl_moviedb_0706012010013.helpers.PaginationScrollListener;
 import com.example.afl_moviedb_0706012010013.models.NowPlaying;
+import com.example.afl_moviedb_0706012010013.models.TrendingMovies;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -71,16 +74,21 @@ public class NowPlayingFragment extends Fragment {
         }
     }
 
-    private RecyclerView rv_nowplaying_f;
+    private RecyclerView rv_nowplaying_f, rv_trendingDay_Movies, rv_trendingWeek_Movies;
     private MovieViewModel movieViewModel_nowplaying_f;
-    private rvAdapter_nowPlaying_movieDetail rvAdapter_nowPlaying_movieDetail;
-    private LinearLayoutManager linearLayoutManager;
+    private rvAdapter_nowPlaying rvAdapter_nowPlaying;
+    private rvAdapter_nowPlaying_TrendingDay rvAdapter_nowPlaying_TrendingDay;
+    private rvAdapter_nowPlaying_TrendingWeek rvAdapter_nowPlaying_TrendingWeek;
+    private LinearLayoutManager linearLayoutManager, linearLayoutManagerRVNowplaying;
     private ProgressBar progressBar;
     private static final int PAGE_START = 1;
-    private boolean isLoading=false;
-    private boolean isLastPage=false;
-    private int TOTAL_PAGE;
-    private int currentPage = PAGE_START;
+    private boolean isLoading;
+    private boolean isLastPage;
+    private long TOTAL_PAGE;
+    private long currentPage;
+
+    private String cek1, cek2, cek3, cek4, cek5;
+    private long MaxPage=2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -90,30 +98,29 @@ public class NowPlayingFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_now_playing, container, false);
 
         inisialisasi(view);
-        loadFirstPage(currentPage);
 
-        rv_nowplaying_f.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
+        setRV_NowPlayingMovies();
+
+        loadDataTrendingMovies("day");
+
+        loadDataTrendingMovies("week");
+
+        currentPage=PAGE_START;
+        isLoading=false;
+        isLastPage=false;
+
+        //cek1="Awalcurrent1:"+currentPage+" size1: "+rvAdapter_nowPlaying.getListNowPlaying().size();
+
+        loadDataNowPlaying();
+
+        rv_nowplaying_f.addOnScrollListener(new PaginationScrollListener(linearLayoutManagerRVNowplaying) {
             @Override
             protected void loadMoreItems() {
-                if(currentPage<2){
-                    isLoading=true;
-                    currentPage+=1;
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadNextPage(currentPage);//(currentPage);
-                        }
-                    }, 200);
-                }else{
-                    rvAdapter_nowPlaying_movieDetail.removeLoadingFooter();
-                    isLoading=false;
-                    isLastPage=true;
-                }
+                loadDataNowPlaying();
             }
 
             @Override
-            public int getTotalPageCount() {
+            public long getTotalPageCount() {
                 return TOTAL_PAGE;
             }
 
@@ -128,27 +135,68 @@ public class NowPlayingFragment extends Fragment {
             }
         });
 
+        addItemClickSupport();
+
         return view;
     }
 
-    private void loadFirstPage(int currentPage) {
-        getData(currentPage);
-    }
-
-    private void loadNextPage(int currentPage){
-        getData(currentPage);
-    }
-
-    private void getData(int currentPage) {
-
-        if(currentPage>PAGE_START && rvAdapter_nowPlaying_movieDetail.getListNowPlaying().size()==0){
-            this.currentPage=PAGE_START;
-
+    private void loadDataTrendingMovies(String keterangan) {
+        if(keterangan=="day"){
+            movieViewModel_nowplaying_f.getTrendingDayMovies();
+            movieViewModel_nowplaying_f.getResultGetTrendingDayMovies().observe(getActivity(), showresultTrendingDayMovies);
+        }else{
+            movieViewModel_nowplaying_f.getTrendingWeekMovies();
+            movieViewModel_nowplaying_f.getResultGetTrendingWeekMovies().observe(getActivity(), showresultTrendingWeekMovies);
         }
+    }
 
-        movieViewModel_nowplaying_f.getNowPlaying(currentPage);
-        movieViewModel_nowplaying_f.getResultGetNowPlaying().observe(getActivity(), showresultNowPlaying);
+    private void loadDataNowPlaying() {
+        getData();
+    }
 
+    private void getData() {
+
+        //cek2 = "Beforegetdatacurrent2:" + getCurrentPage() + " size2: " + rvAdapter_nowPlaying.getListNowPlaying().size();
+
+            if ((getCurrentPageNowPlaying() < getMaxPageNowPlaying() && rvAdapter_nowPlaying.getListNowPlaying().size() != 0) ||
+                    (getCurrentPageNowPlaying() <= getMaxPageNowPlaying() && rvAdapter_nowPlaying.getListNowPlaying().size() == 0) ) {
+
+                if ((getCurrentPageNowPlaying() < getMaxPageNowPlaying() && rvAdapter_nowPlaying.getListNowPlaying().size() != 0)) {
+
+                    isLoading = true;
+                    setCurrentPageNowPlaying();
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            movieViewModel_nowplaying_f.getNowPlaying(String.valueOf(getCurrentPageNowPlaying()));
+                            movieViewModel_nowplaying_f.getResultGetNowPlaying().observe(getActivity(), showresultNowPlaying);
+                        }
+                    }, 300);
+
+                } else if((getCurrentPageNowPlaying() == getMaxPageNowPlaying() && rvAdapter_nowPlaying.getListNowPlaying().size() == 0)
+                ||  (getCurrentPageNowPlaying() == PAGE_START && rvAdapter_nowPlaying.getListNowPlaying().size() == 0)){
+
+                    //cek4 ="Pagestarnow"+PAGE_START+ "dataakhrstlhklik1or4current4:" + getCurrentPageNowPlaying() + " size4: " + rvAdapter_nowPlaying.getListNowPlaying().size();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            movieViewModel_nowplaying_f.getNowPlaying(String.valueOf(getCurrentPageNowPlaying()));
+                            movieViewModel_nowplaying_f.getResultGetNowPlaying().observe(getActivity(), showresultNowPlaying);
+                        }
+                    }, 300);
+
+                }
+
+                //cek3 = "afteradddtacurrent3:" + getCurrentPage() + " size3: " + rvAdapter_nowPlaying.getListNowPlaying().size();
+            }  else {
+
+                rvAdapter_nowPlaying.removeLoadingFooter();
+                isLoading = false;
+                isLastPage = true;
+                cek5="yaaaMskakhrpge";
+
+            }
     }
 
     private Observer<NowPlaying> showresultNowPlaying = new Observer<NowPlaying>() {
@@ -157,53 +205,114 @@ public class NowPlayingFragment extends Fragment {
 
             progressBar.setVisibility(View.GONE);
 
-            List<NowPlaying.Results> nowplayingresult=nowPlaying.getResults();
+            cek3="beforemaxpage"+getMaxPageNowPlaying();
+           setMaxPageNowPlaying(nowPlaying.getTotal_pages());
+            cek3="aftermaxpage"+getMaxPageNowPlaying();
 
-            TOTAL_PAGE=nowplayingresult.size();
 
-            if(currentPage==1){
-                    setRV_listNowPlaying(nowplayingresult);
+            setTOTAL_PAGE(nowPlaying.getResults().size());
 
-                    if(currentPage<=TOTAL_PAGE) {
-                    rvAdapter_nowPlaying_movieDetail.addLoadingFooter();
+            if(getCurrentPageNowPlaying() <= getMaxPageNowPlaying() && rvAdapter_nowPlaying.getListNowPlaying().size() == 0) {
+
+                setDataRV_listNowPlaying(nowPlaying.getResults());
+               // cek2 = "hh" + rvAdapter_nowPlaying.getListNowPlaying().size();
+                    if (getCurrentPageNowPlaying() <= getMaxPageNowPlaying()) {
+
+                        rvAdapter_nowPlaying.addLoadingFooter();
+                    } else {
+                        isLastPage = true;
                     }
 
-                    else {
-                    isLastPage= true;
-                    }
+            }else if (getCurrentPageNowPlaying() <= getMaxPageNowPlaying() && rvAdapter_nowPlaying.getListNowPlaying().size() != 0) {
+                cek2="pphh"+getCurrentPageNowPlaying();
+                //untuk ngapusobjekkosongfooter
 
-            }else {
-                rvAdapter_nowPlaying_movieDetail.removeLoadingFooter();
+                rvAdapter_nowPlaying.removeLoadingFooter();
                 isLoading = false;
-                setRV_listNowPlaying(nowplayingresult);
+                setDataRV_listNowPlaying(nowPlaying.getResults());
 
-                if(currentPage!=TOTAL_PAGE) {
-                    rvAdapter_nowPlaying_movieDetail.addLoadingFooter();
+                if(getCurrentPageNowPlaying() <= getMaxPageNowPlaying()) {
+                    rvAdapter_nowPlaying.addLoadingFooter();
                 }
+
                 else {
+                    //cek2="hend"+getCurrentPageNowPlaying();
                     isLastPage= true;
                 }
 
             }
-
-           addItemClickSupport();
         }
     };
 
-    private void setRV_listNowPlaying(List<NowPlaying.Results> nowPlaying){
-        rvAdapter_nowPlaying_movieDetail.addAll(nowPlaying);
-        rvAdapter_nowPlaying_movieDetail.notifyDataSetChanged();
+    public long getMaxPageNowPlaying() {
+        return this.MaxPage;
+    }
+
+    private Observer<TrendingMovies> showresultTrendingDayMovies = new Observer<TrendingMovies>() {
+        @Override
+        public void onChanged(TrendingMovies trendingMoviesDay) {
+            List<TrendingMovies.Results> lisresult = trendingMoviesDay.getResults();
+            setRV_TrendingDayMovies(lisresult);
+        }
+    };
+
+    private Observer<TrendingMovies> showresultTrendingWeekMovies = new Observer<TrendingMovies>() {
+        @Override
+        public void onChanged(TrendingMovies trendingMoviesWeek) {
+            setRV_TrendingWeekMovies(trendingMoviesWeek.getResults());
+        }
+    };
+
+    public void setTOTAL_PAGE(long TOTAL_PAGE){
+        this.TOTAL_PAGE=TOTAL_PAGE;
+    }
+    public long getCurrentPageNowPlaying(){
+        return this.currentPage;
+    }
+    public long getTOTAL_PAGE(){
+        return this.TOTAL_PAGE;
+    }
+    public void setMaxPageNowPlaying(long MaxPages) {
+        this.MaxPage= MaxPages;
+    }
+    public void setCurrentPageNowPlaying(){
+        this.currentPage++;
+    }
+    private void setDataRV_listNowPlaying(List<NowPlaying.Results> nowPlaying){
+        rvAdapter_nowPlaying.addAll(nowPlaying);
     }
 
     private void inisialisasi(View view){
         rv_nowplaying_f=view.findViewById(R.id.rv_nowplaying_f);
         progressBar=view.findViewById(R.id.progressBar_NowPlayingFragment);
-        rvAdapter_nowPlaying_movieDetail=new rvAdapter_nowPlaying_movieDetail(getActivity());
-        linearLayoutManager=new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rv_nowplaying_f.setLayoutManager(linearLayoutManager);
-        rv_nowplaying_f.setAdapter(rvAdapter_nowPlaying_movieDetail);
+        rv_trendingDay_Movies=view.findViewById(R.id.rv_trendingDay_Movies);
+        rv_trendingWeek_Movies=view.findViewById(R.id.rv_trendingWeek_Movies);
 
         movieViewModel_nowplaying_f=new ViewModelProvider(getActivity()).get(MovieViewModel.class);
+    }
+
+    private void setRV_TrendingDayMovies(List<TrendingMovies.Results> listTrendingDay){
+        rvAdapter_nowPlaying_TrendingDay=new rvAdapter_nowPlaying_TrendingDay(getActivity());
+        linearLayoutManager=new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.HORIZONTAL, false);
+        rv_trendingDay_Movies.setLayoutManager(linearLayoutManager);
+        rvAdapter_nowPlaying_TrendingDay.setListTrendingDayMoviesAdapter(listTrendingDay);
+        rv_trendingDay_Movies.setAdapter(rvAdapter_nowPlaying_TrendingDay);
+    }
+    private void setRV_NowPlayingMovies(){
+        rvAdapter_nowPlaying =new rvAdapter_nowPlaying(getActivity());
+        linearLayoutManagerRVNowplaying=new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rv_nowplaying_f.setLayoutManager(linearLayoutManagerRVNowplaying);
+        rv_nowplaying_f.setAdapter(rvAdapter_nowPlaying);
+    }
+
+    private void setRV_TrendingWeekMovies(List<TrendingMovies.Results> listTrendingWeek){
+        rvAdapter_nowPlaying_TrendingWeek=new rvAdapter_nowPlaying_TrendingWeek(getActivity());
+        linearLayoutManager=new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.HORIZONTAL, false);
+        rv_trendingWeek_Movies.setLayoutManager(linearLayoutManager);
+        rvAdapter_nowPlaying_TrendingWeek.setListTrendingWeekMoviesAdapter(listTrendingWeek);
+        rv_trendingWeek_Movies.setAdapter(rvAdapter_nowPlaying_TrendingWeek);
     }
 
     private void addItemClickSupport(){
@@ -212,9 +321,42 @@ public class NowPlayingFragment extends Fragment {
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 
                 Bundle bundle=new Bundle();
-                bundle.putString("movieId", ""+rvAdapter_nowPlaying_movieDetail.getListNowPlaying().get(position).getId());
-                bundle.putString("fromFragment", "NowPlayingFragment");
+                bundle.putString("movieId", ""+ rvAdapter_nowPlaying.getListNowPlaying().get(position).getId());
+
                 Navigation.findNavController(v).navigate(R.id.action_nowPlayingFragment_to_movieDetailFragment,bundle);
+            }
+        });
+
+        ItemClickSupport.addTo(rv_trendingDay_Movies).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+
+                Bundle bundle=new Bundle();
+                bundle.putString("movieId", ""+ rvAdapter_nowPlaying_TrendingDay.getListTrendingDayMovies().get(position).getId());
+
+                Navigation.findNavController(v).navigate(R.id.action_nowPlayingFragment_to_movieDetailFragment,bundle);
+
+            }
+        });
+
+        ItemClickSupport.addTo(rv_trendingWeek_Movies).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+
+                Bundle bundle=new Bundle();
+                bundle.putString("movieId", ""+ rvAdapter_nowPlaying_TrendingWeek.getListTrendingWeekMovies().get(position).getId());
+
+                Navigation.findNavController(v).navigate(R.id.action_nowPlayingFragment_to_movieDetailFragment,bundle);
+
+            }
+        });
+
+        ItemClickSupport.addTo(rv_nowplaying_f).setOnItemLongClickListener(new ItemClickSupport.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClicked(RecyclerView recyclerView, int position, View v) {
+                //Toast.makeText(getActivity(),String.valueOf(currentPage)+"size:"+rvAdapter_nowPlaying.getListNowPlaying().size()
+                  //      +cek1+cek2+cek3+cek4+cek5, Toast.LENGTH_LONG).show();
+                return true;
             }
         });
     }

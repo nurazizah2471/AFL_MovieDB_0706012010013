@@ -1,8 +1,6 @@
 package com.example.afl_moviedb_0706012010013.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Movie;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,32 +11,40 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.afl_moviedb_0706012010013.R;
 import com.example.afl_moviedb_0706012010013.helpers.Const;
 import com.example.afl_moviedb_0706012010013.models.NowPlaying;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
-public class rvAdapter_nowPlaying_movieDetail extends RecyclerView.Adapter<rvAdapter_nowPlaying_movieDetail.NowPlayingHolder> {
+public class rvAdapter_nowPlaying extends RecyclerView.Adapter<rvAdapter_nowPlaying.NowPlayingHolder> {
 
     private Context context;
-    private List<NowPlaying.Results> listNowPlaying;
+    private static List<NowPlaying.Results> listNowPlaying;
     private static final int ITEM =0;
     private static final int LOADING=1;
     private boolean isLoadingAdded=false;
+
 
     public List<NowPlaying.Results> getListNowPlaying(){
         return this.listNowPlaying;
     }
 
+
+
     public void setListNowPlayingAdapter(List<NowPlaying.Results> listNowPlaying){
         this.listNowPlaying=listNowPlaying;
     }
 
-    public rvAdapter_nowPlaying_movieDetail(Context context) {
+    public static void removeListNowPlaying(){
+        for (int p=0;p<listNowPlaying.size();p++){
+            listNowPlaying.remove(p);
+        }
+
+    }
+
+    public rvAdapter_nowPlaying(Context context) {
         this.context = context;
         this.listNowPlaying=new ArrayList<>();
     }
@@ -69,18 +75,26 @@ public class rvAdapter_nowPlaying_movieDetail extends RecyclerView.Adapter<rvAda
 
     @Override
     public void onBindViewHolder(@NonNull NowPlayingHolder holder, int position) {
-        final NowPlaying.Results resultNowPlaying = getListNowPlaying().get(position);
+
+
+
+
 
         switch (getItemViewType(position)){
             case ITEM:
 
+                final NowPlaying.Results resultNowPlaying = getListNowPlaying().get(position);
+
                 holder.title_nowplaying.setText(resultNowPlaying.getTitle());
-                holder.overview_listNowPlaying.setText(resultNowPlaying.getOverview());
                 holder.rating_nowplaying.setText(String.valueOf(resultNowPlaying.getVote_average()));
 
                 Glide.with(context)
                         .load(Const.IMAGE_PATH +resultNowPlaying.getPoster_path())
                         .into(holder.imagePoster_nowplaying);
+
+                holder.releasedAt_nowplaying.setText("Released At: " + resultNowPlaying.getRelease_date());
+                holder.popularity_nowplaying.setText(resultNowPlaying.getPopularity()+" Popular");
+
                 break;
 
             case LOADING:
@@ -100,6 +114,7 @@ public class rvAdapter_nowPlaying_movieDetail extends RecyclerView.Adapter<rvAda
 
     private void add(NowPlaying.Results nowplaying){
         listNowPlaying.add(nowplaying);
+        notifyItemInserted(getItemCount()-1);
     }
 
     public void addAll(List<NowPlaying.Results> listNowPlayingmove){
@@ -110,9 +125,9 @@ public class rvAdapter_nowPlaying_movieDetail extends RecyclerView.Adapter<rvAda
 
     public void remove(NowPlaying.Results nowplaying){
         int position=listNowPlaying.indexOf(nowplaying);
+
         if(position>-1){
             listNowPlaying.remove(position);
-            notifyItemRemoved(position);
         }
     }
 
@@ -121,6 +136,8 @@ public class rvAdapter_nowPlaying_movieDetail extends RecyclerView.Adapter<rvAda
         while(getItemCount()>0){
             remove(getItem(0));
         }
+
+        notifyDataSetChanged();
     }
 
     public boolean isEmpty(){
@@ -140,7 +157,7 @@ public class rvAdapter_nowPlaying_movieDetail extends RecyclerView.Adapter<rvAda
 
         if(results!=null){
             listNowPlaying.remove(position);
-            notifyItemRemoved(position);
+            notifyDataSetChanged();
         }
     }
 
@@ -150,7 +167,7 @@ public class rvAdapter_nowPlaying_movieDetail extends RecyclerView.Adapter<rvAda
 
     public class NowPlayingHolder extends RecyclerView.ViewHolder {
 
-        TextView title_nowplaying, rating_nowplaying, overview_listNowPlaying;
+        TextView title_nowplaying, rating_nowplaying, releasedAt_nowplaying, popularity_nowplaying;
         ImageView imagePoster_nowplaying;
 
         public NowPlayingHolder(@NonNull View itemView) {
@@ -159,7 +176,8 @@ public class rvAdapter_nowPlaying_movieDetail extends RecyclerView.Adapter<rvAda
             title_nowplaying = itemView.findViewById(R.id.title_nowplaying);
             rating_nowplaying = itemView.findViewById(R.id.rating_nowplaying);
             imagePoster_nowplaying = itemView.findViewById(R.id.imagePoster_nowplaying);
-            overview_listNowPlaying=itemView.findViewById(R.id.overview_listNowPlaying);
+            releasedAt_nowplaying=itemView.findViewById(R.id.releasedAt_nowplaying);
+            popularity_nowplaying=itemView.findViewById(R.id.popularity_nowplaying);
         }
     }
 

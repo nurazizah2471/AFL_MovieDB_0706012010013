@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.afl_moviedb_0706012010013.models.Movies;
 import com.example.afl_moviedb_0706012010013.models.NowPlaying;
+import com.example.afl_moviedb_0706012010013.models.TrendingMovies;
 import com.example.afl_moviedb_0706012010013.models.UpComing;
 import com.example.afl_moviedb_0706012010013.repositories.MovieRepository;
 
@@ -37,7 +38,7 @@ public class MovieViewModel extends AndroidViewModel {
 
     private MutableLiveData<NowPlaying> resultGetNowPlaying = new MutableLiveData<>();
 
-    public void getNowPlaying(int page){
+    public void getNowPlaying(String page){
        resultGetNowPlaying=movieRepository.getNowPlaying(page);
 
     }
@@ -50,7 +51,7 @@ public class MovieViewModel extends AndroidViewModel {
 
     private MutableLiveData<UpComing> resultGetUpComing = new MutableLiveData<>();
 
-    public void getUpComing(int page){
+    public void getUpComing(String page){
         resultGetUpComing=movieRepository.getUpComing(page);
 
     }
@@ -58,4 +59,30 @@ public class MovieViewModel extends AndroidViewModel {
         return resultGetUpComing;
     }
     //==End of viewModel to getupcoming
+
+    //==Begin of viewModel to getTrendingDayMovies
+
+    private MutableLiveData<TrendingMovies> resultGetTrendingDayMovies = new MutableLiveData<>();
+
+    public void getTrendingDayMovies(){
+        resultGetTrendingDayMovies=movieRepository.getMovieDataTrending("movie", "day" );
+
+    }
+    public LiveData<TrendingMovies> getResultGetTrendingDayMovies(){
+        return resultGetTrendingDayMovies;
+    }
+    //==End of viewModel to getTrendingDayMovies
+
+    //==Begin of viewModel to getTrendingWeekMovies
+
+    private MutableLiveData<TrendingMovies> resultGetTrendingWeekMovies = new MutableLiveData<>();
+
+    public void getTrendingWeekMovies(){
+        resultGetTrendingWeekMovies=movieRepository.getMovieDataTrending("movie", "week" );
+
+    }
+    public LiveData<TrendingMovies> getResultGetTrendingWeekMovies(){
+        return resultGetTrendingWeekMovies;
+    }
+    //==End of viewModel to getTrendingWeekMovies
 }
