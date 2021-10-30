@@ -332,5 +332,4 @@ public class UpComingFragment extends Fragment {
             }
         });
     }
-
 }

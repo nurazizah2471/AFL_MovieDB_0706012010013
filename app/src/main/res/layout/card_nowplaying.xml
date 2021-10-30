@@ -23,12 +23,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <View
+                android:id="@+id/divider"
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                android:layout_marginBottom="5dp"
+                android:background="#CFCACA"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
             <ImageView
                 android:id="@+id/imagePoster_nowplaying"
                 android:layout_width="150dp"
                 android:layout_height="170dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/divider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_launcher_foreground" />
@@ -42,7 +54,7 @@
                 android:layout_marginEnd="5dp"
                 android:text="@string/nonValue"
                 android:textColor="#FFEB3B"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -65,22 +77,12 @@
                 android:layout_marginTop="10dp"
                 android:text="@string/nonValue"
                 android:textColor="#FF9800"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/title_nowplaying"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toBottomOf="@+id/title_nowplaying" />
-
-            <View
-                android:id="@+id/divider"
-                android:layout_width="0dp"
-                android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:background="#CFCACA"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imagePoster_nowplaying" />
 
             <TextView
                 android:id="@+id/releasedAt_nowplaying"
@@ -90,6 +92,7 @@
                 android:maxLines="3"
                 android:text="TextView"
                 android:textColor="#FFFF9800"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/rating_nowplaying"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/imageView"
@@ -102,6 +105,7 @@
                 android:layout_marginTop="5dp"
                 android:text="TextView"
                 android:textColor="#FFFF9800"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/releasedAt_nowplaying"
                 app:layout_constraintStart_toStartOf="@+id/releasedAt_nowplaying"
                 app:layout_constraintTop_toBottomOf="@+id/releasedAt_nowplaying" />

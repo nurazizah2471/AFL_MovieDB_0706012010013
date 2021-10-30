@@ -1,6 +1,7 @@
 package com.example.afl_moviedb_0706012010013.views.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -127,6 +127,14 @@ public class MovieDetailsFragment extends Fragment {
             setRV(movies);
 
             progressBar.setVisibility(View.GONE); // Hide Progress bar
+            mainContent.setVisibility(View.VISIBLE);
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    progressBar.setVisibility(View.GONE); // Hide Progress bar
+                }
+            }, 200);
             mainContent.setVisibility(View.VISIBLE);
 
             addItemClickSupport(movies);
