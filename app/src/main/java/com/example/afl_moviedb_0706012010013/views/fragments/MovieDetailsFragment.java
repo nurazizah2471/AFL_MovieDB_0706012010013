@@ -3,6 +3,7 @@ package com.example.afl_moviedb_0706012010013.views.fragments;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -11,10 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -111,17 +114,8 @@ public class MovieDetailsFragment extends Fragment {
         movieViewModel.getResultGetCreditMovies().observe(getActivity(), showResultCreditMovies);
 
         addItemClickSupport();
+
         return view;
-    }
-
-    private void onBackPress(View v) {
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
-            @Override
-           public void handleOnBackPressed() {
-               getActivity().onBackPressed();
-
-            }
-        });
     }
 
     private Observer<Movies> showResultMovieinDetail = new Observer<Movies>() {
@@ -133,9 +127,6 @@ public class MovieDetailsFragment extends Fragment {
             setTextView(movies);
 
             setRV(movies);
-
-           // progressBar.setVisibility(View.GONE); // Hide Progress bar
-            //mainContent.setVisibility(View.VISIBLE);
         }
     };
 

@@ -36,4 +36,10 @@ public class MainMenuActivity extends AppCompatActivity {
     private void inisialisasi() {
         bottomNavigationView=findViewById(R.id.bottomNavigationView);
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        return nav_fragment_main_menu.getNavController().navigateUp()||super.onSupportNavigateUp();
+    }
+
 }
