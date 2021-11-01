@@ -82,11 +82,10 @@ public class NowPlayingFragment extends Fragment {
     private LinearLayoutManager linearLayoutManager, linearLayoutManagerRVNowplaying;
     private ProgressBar progressBar;
     private static final int PAGE_START = 1;
-    private boolean isLoading;
-    private boolean isLastPage;
-    private long TOTAL_PAGE;
-    private long currentPage;
+    private boolean isLoading, isLastPage;
+    private long TOTAL_PAGE, currentPage;
     private long MaxPage=2;
+    private Bundle bundle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,12 +106,12 @@ public class NowPlayingFragment extends Fragment {
         isLoading=false;
         isLastPage=false;
 
-        loadDataNowPlaying();
+        getData();
 
         rv_nowplaying_f.addOnScrollListener(new PaginationScrollListener(linearLayoutManagerRVNowplaying) {
             @Override
             protected void loadMoreItems() {
-                loadDataNowPlaying();
+                getData();
             }
 
             @Override
@@ -146,10 +145,6 @@ public class NowPlayingFragment extends Fragment {
         }
     }
 
-    private void loadDataNowPlaying() {
-        getData();
-    }
-
     private void getData() {
 
             if ((getCurrentPageNowPlaying() < getMaxPageNowPlaying() && rvAdapter_nowPlaying.getListNowPlaying().size() != 0) ||
@@ -163,8 +158,7 @@ public class NowPlayingFragment extends Fragment {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            movieViewModel_nowplaying_f.getNowPlaying(String.valueOf(getCurrentPageNowPlaying()));
-                            movieViewModel_nowplaying_f.getResultGetNowPlaying().observe(getActivity(), showresultNowPlaying);
+                           getDataObserveNowPlaying();
                         }
                     }, 300);
 
@@ -174,11 +168,9 @@ public class NowPlayingFragment extends Fragment {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            movieViewModel_nowplaying_f.getNowPlaying(String.valueOf(getCurrentPageNowPlaying()));
-                            movieViewModel_nowplaying_f.getResultGetNowPlaying().observe(getActivity(), showresultNowPlaying);
+                           getDataObserveNowPlaying();
                         }
                     }, 300);
-
                 }
             }  else {
                 rvAdapter_nowPlaying.removeLoadingFooter();
@@ -187,15 +179,21 @@ public class NowPlayingFragment extends Fragment {
             }
     }
 
+    private void getDataObserveNowPlaying(){
+
+        movieViewModel_nowplaying_f.getNowPlaying(String.valueOf(getCurrentPageNowPlaying()));
+        movieViewModel_nowplaying_f.getResultGetNowPlaying().observe(getActivity(), showresultNowPlaying);
+    }
+
     private Observer<NowPlaying> showresultNowPlaying = new Observer<NowPlaying>() {
         @Override
         public void onChanged(NowPlaying nowPlaying) {
 
-            progressBar.setVisibility(View.GONE);
-
             setMaxPageNowPlaying(nowPlaying.getTotal_pages());
 
             setTOTAL_PAGE(nowPlaying.getResults().size());
+
+            progressBar.setVisibility(View.GONE);
 
             if(getCurrentPageNowPlaying() <= getMaxPageNowPlaying() && rvAdapter_nowPlaying.getListNowPlaying().size() == 0) {
 
@@ -231,8 +229,7 @@ public class NowPlayingFragment extends Fragment {
     private Observer<TrendingMovies> showresultTrendingDayMovies = new Observer<TrendingMovies>() {
         @Override
         public void onChanged(TrendingMovies trendingMoviesDay) {
-            List<TrendingMovies.Results> lisresult = trendingMoviesDay.getResults();
-            setRV_TrendingDayMovies(lisresult);
+            setRV_TrendingDayMovies(trendingMoviesDay.getResults());
         }
     };
 
@@ -248,9 +245,6 @@ public class NowPlayingFragment extends Fragment {
     }
     public long getCurrentPageNowPlaying(){
         return this.currentPage;
-    }
-    public long getTOTAL_PAGE(){
-        return this.TOTAL_PAGE;
     }
     public void setMaxPageNowPlaying(long MaxPages) {
         this.MaxPage= MaxPages;
@@ -271,6 +265,13 @@ public class NowPlayingFragment extends Fragment {
         movieViewModel_nowplaying_f=new ViewModelProvider(getActivity()).get(MovieViewModel.class);
     }
 
+    private void setRV_NowPlayingMovies(){
+        rvAdapter_nowPlaying =new rvAdapter_nowPlaying(getActivity());
+        linearLayoutManagerRVNowplaying=new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rv_nowplaying_f.setLayoutManager(linearLayoutManagerRVNowplaying);
+        rv_nowplaying_f.setAdapter(rvAdapter_nowPlaying);
+    }
+
     private void setRV_TrendingDayMovies(List<TrendingMovies.Results> listTrendingDay){
         rvAdapter_nowPlaying_TrendingDay=new rvAdapter_nowPlaying_TrendingDay(getActivity());
         linearLayoutManager=new LinearLayoutManager(getActivity(),
@@ -278,13 +279,6 @@ public class NowPlayingFragment extends Fragment {
         rv_trendingDay_Movies.setLayoutManager(linearLayoutManager);
         rvAdapter_nowPlaying_TrendingDay.setListTrendingDayMoviesAdapter(listTrendingDay);
         rv_trendingDay_Movies.setAdapter(rvAdapter_nowPlaying_TrendingDay);
-    }
-
-    private void setRV_NowPlayingMovies(){
-        rvAdapter_nowPlaying =new rvAdapter_nowPlaying(getActivity());
-        linearLayoutManagerRVNowplaying=new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rv_nowplaying_f.setLayoutManager(linearLayoutManagerRVNowplaying);
-        rv_nowplaying_f.setAdapter(rvAdapter_nowPlaying);
     }
 
     private void setRV_TrendingWeekMovies(List<TrendingMovies.Results> listTrendingWeek){
@@ -301,7 +295,7 @@ public class NowPlayingFragment extends Fragment {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 
-                Bundle bundle=new Bundle();
+                bundle=new Bundle();
                 bundle.putString("movieId", ""+ rvAdapter_nowPlaying.getListNowPlaying().get(position).getId());
 
                 Navigation.findNavController(v).navigate(R.id.action_nowPlayingFragment_to_movieDetailFragment,bundle);
@@ -312,7 +306,7 @@ public class NowPlayingFragment extends Fragment {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 
-                Bundle bundle=new Bundle();
+                bundle=new Bundle();
                 bundle.putString("movieId", ""+ rvAdapter_nowPlaying_TrendingDay.getListTrendingDayMovies().get(position).getId());
 
                 Navigation.findNavController(v).navigate(R.id.action_nowPlayingFragment_to_movieDetailFragment,bundle);
@@ -324,11 +318,10 @@ public class NowPlayingFragment extends Fragment {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 
-                Bundle bundle=new Bundle();
+                bundle=new Bundle();
                 bundle.putString("movieId", ""+ rvAdapter_nowPlaying_TrendingWeek.getListTrendingWeekMovies().get(position).getId());
 
                 Navigation.findNavController(v).navigate(R.id.action_nowPlayingFragment_to_movieDetailFragment,bundle);
-
             }
         });
     }

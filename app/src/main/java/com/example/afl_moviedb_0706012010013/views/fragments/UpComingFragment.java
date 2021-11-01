@@ -82,11 +82,10 @@ public class UpComingFragment extends Fragment {
     private LinearLayoutManager linearLayoutManager, linearLayoutManagerRVUpcoming;
     private ProgressBar progressBar;
     private static final int PAGE_START = 1;
-    private boolean isLoading;
-    private boolean isLastPage;
-    private long TOTAL_PAGE;
-    private long currentPage;
+    private boolean isLoading, isLastPage;
+    private long TOTAL_PAGE, currentPage;
     private long MaxPage=2;
+    private Bundle bundle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,12 +106,12 @@ public class UpComingFragment extends Fragment {
         isLoading=false;
         isLastPage=false;
 
-        loadDataUpComing();
+        getData();
 
         rv_upcoming_f.addOnScrollListener(new PaginationScrollListener(linearLayoutManagerRVUpcoming) {
             @Override
             protected void loadMoreItems() {
-                loadDataUpComing();
+                getData();
             }
             @Override
             public long getTotalPageCount() {
@@ -145,10 +144,6 @@ public class UpComingFragment extends Fragment {
         }
     }
 
-    private void loadDataUpComing(){
-        getData();
-    }
-
     private void getData() {
 
         if((getCurrentPageUpComing()<getMaxPageUpComing() && rvAdapter_upComing.getListUpComing().size()!=0) ||
@@ -161,8 +156,7 @@ public class UpComingFragment extends Fragment {
                new Handler().postDelayed(new Runnable() {
                    @Override
                    public void run() {
-                       movieViewModel_upcoming_f.getUpComing(String.valueOf(getCurrentPageUpComing()));
-                       movieViewModel_upcoming_f.getResultGetUpComing().observe(getActivity(), showresultUpComing);
+                       getDataObserveUpComing();
                    }
                }, 300);
 
@@ -172,8 +166,7 @@ public class UpComingFragment extends Fragment {
                new Handler().postDelayed(new Runnable() {
                    @Override
                    public void run() {
-                       movieViewModel_upcoming_f.getUpComing(String.valueOf(getCurrentPageUpComing()));
-                       movieViewModel_upcoming_f.getResultGetUpComing().observe(getActivity(), showresultUpComing);
+                      getDataObserveUpComing();
                    }
                }, 300);
 
@@ -185,15 +178,21 @@ public class UpComingFragment extends Fragment {
         }
     }
 
+    private void getDataObserveUpComing(){
+
+        movieViewModel_upcoming_f.getUpComing(String.valueOf(getCurrentPageUpComing()));
+        movieViewModel_upcoming_f.getResultGetUpComing().observe(getActivity(), showresultUpComing);
+    }
+
     private Observer<UpComing> showresultUpComing = new Observer<UpComing>() {
         @Override
         public void onChanged(UpComing upComing) {
 
-            progressBar.setVisibility(View.GONE);
-
             setMaxPageUpComing(upComing.getTotal_pages());
 
             setTOTAL_PAGE(upComing.getResults().size());
+
+            progressBar.setVisibility(View.GONE);
 
             if(getCurrentPageUpComing()<=getMaxPageUpComing() && rvAdapter_upComing.getListUpComing().size()==0){
                 setDataRV_listUpComing(upComing.getResults());
@@ -224,8 +223,7 @@ public class UpComingFragment extends Fragment {
     private Observer<TrendingMovies> showresultTrendingDayMovies = new Observer<TrendingMovies>() {
         @Override
         public void onChanged(TrendingMovies trendingMoviesDay) {
-            List<TrendingMovies.Results> lisresult = trendingMoviesDay.getResults();
-            setRV_TrendingDayMovies(lisresult);
+            setRV_TrendingDayMovies(trendingMoviesDay.getResults());
         }
     };
 
@@ -241,9 +239,6 @@ public class UpComingFragment extends Fragment {
     }
     public long getCurrentPageUpComing(){
         return this.currentPage;
-    }
-    public long getTOTAL_PAGE(){
-        return this.TOTAL_PAGE;
     }
     public long getMaxPageUpComing() {
         return this.MaxPage;
@@ -297,9 +292,9 @@ public class UpComingFragment extends Fragment {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 
-                Bundle bundle=new Bundle();
+                bundle=new Bundle();
                 bundle.putString("movieId", ""+ rvAdapter_upComing.getListUpComing().get(position).getId());
-                bundle.putString("fromFragment", "UpComingFragment");
+
                 Navigation.findNavController(v).navigate(R.id.action_upComingFragment_to_movieDetailFragment,bundle);
             }
         });
@@ -308,7 +303,7 @@ public class UpComingFragment extends Fragment {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 
-                Bundle bundle=new Bundle();
+                bundle=new Bundle();
                 bundle.putString("movieId", ""+ rvAdapter_nowPlaying_TrendingDay.getListTrendingDayMovies().get(position).getId());
 
                 Navigation.findNavController(v).navigate(R.id.action_upComingFragment_to_movieDetailFragment,bundle);
@@ -320,7 +315,7 @@ public class UpComingFragment extends Fragment {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 
-                Bundle bundle=new Bundle();
+                bundle=new Bundle();
                 bundle.putString("movieId", ""+ rvAdapter_nowPlaying_TrendingWeek.getListTrendingWeekMovies().get(position).getId());
 
                 Navigation.findNavController(v).navigate(R.id.action_upComingFragment_to_movieDetailFragment,bundle);
