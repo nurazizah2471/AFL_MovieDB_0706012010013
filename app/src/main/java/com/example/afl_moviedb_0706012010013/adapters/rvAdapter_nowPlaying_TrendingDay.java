@@ -50,7 +50,7 @@ public class rvAdapter_nowPlaying_TrendingDay extends RecyclerView.Adapter<rvAda
                 .into(holder.card_poster_trending);
 
         if(resultsTrendingDayMovies.getTitle().length()>10) {
-            holder.card_title_trending.setText(resultsTrendingDayMovies.getTitle().subSequence(0, 9)+"...");
+            holder.card_title_trending.setText(resultsTrendingDayMovies.getTitle().subSequence(0, 10)+"...");
         }else {
             holder.card_title_trending.setText(resultsTrendingDayMovies.getTitle());
         }

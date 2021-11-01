@@ -50,8 +50,11 @@ public class rvAdapter_nowPlaying_TrendingWeek extends RecyclerView.Adapter<rvAd
                 .load(Const.IMAGE_PATH + resultsTrendingWeekMovies.getPoster_path())
                 .into(holder.card_poster_trending);
 
-        holder.card_title_trending.setText(resultsTrendingWeekMovies.getTitle());
-
+        if(resultsTrendingWeekMovies.getTitle().length()>10) {
+            holder.card_title_trending.setText(resultsTrendingWeekMovies.getTitle().subSequence(0, 10)+"...");
+        }else {
+            holder.card_title_trending.setText(resultsTrendingWeekMovies.getTitle());
+        }
     }
 
     @Override

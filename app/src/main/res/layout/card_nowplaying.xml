@@ -42,8 +42,7 @@
                 android:layout_marginBottom="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/divider"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_launcher_foreground" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/title_nowplaying"
@@ -88,27 +87,26 @@
                 android:id="@+id/releasedAt_nowplaying"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:maxLines="3"
-                android:text="TextView"
-                android:textColor="#FFFF9800"
+                android:text="@string/nonValue"
+                android:textColor="#CFCFC7"
                 android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imagePoster_nowplaying"
                 app:layout_constraintEnd_toEndOf="@+id/rating_nowplaying"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/rating_nowplaying" />
+                app:layout_constraintStart_toStartOf="@+id/imageView" />
 
             <TextView
                 android:id="@+id/popularity_nowplaying"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="TextView"
-                android:textColor="#FFFF9800"
+                android:layout_marginBottom="10dp"
+                android:text="@string/nonValue"
+                android:textColor="#CFCFC7"
                 android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="@+id/releasedAt_nowplaying"
-                app:layout_constraintStart_toStartOf="@+id/releasedAt_nowplaying"
-                app:layout_constraintTop_toBottomOf="@+id/releasedAt_nowplaying" />
+                app:layout_constraintBottom_toTopOf="@+id/releasedAt_nowplaying"
+                app:layout_constraintEnd_toEndOf="@+id/rating_nowplaying"
+                app:layout_constraintStart_toStartOf="@+id/imageView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

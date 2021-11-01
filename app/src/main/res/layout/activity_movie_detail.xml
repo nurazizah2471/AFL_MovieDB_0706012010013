@@ -32,19 +32,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#658FE3"
-            android:visibility="gone">
+            android:visibility="">
 
             <ImageView
                 android:id="@+id/bc_Path"
                 android:layout_width="0dp"
-                android:layout_height="260dp"
-                android:alpha="0.9"
+                android:layout_height="180dp"
+                android:alpha="0.7"
                 android:cropToPadding="true"
                 android:scaleType="fitXY"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/logodefaultproductioncompanies" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tagline_movie_detail"
@@ -53,7 +52,7 @@
                 android:alpha="0.5"
                 android:background="@android:drawable/screen_background_dark_transparent"
                 android:padding="10dp"
-                android:text="Tagline"
+                android:text="@string/nonValue"
                 android:textAlignment="textEnd"
                 android:textColor="#FBFBFB"
                 android:textSize="16sp"
@@ -64,13 +63,12 @@
 
             <ImageView
                 android:id="@+id/posterPath_movie_detail"
-                android:layout_width="170dp"
-                android:layout_height="190dp"
-                android:layout_marginTop="150dp"
+                android:layout_width="150dp"
+                android:layout_height="170dp"
+                android:layout_marginTop="100dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/bc_Path"
-                app:srcCompat="@drawable/ic_launcher_foreground" />
+                app:layout_constraintTop_toTopOf="@+id/bc_Path" />
 
             <TextView
                 android:id="@+id/title_movie_detail"
@@ -92,7 +90,7 @@
                 android:id="@+id/originalTitle_movieDetail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="2dp"
                 android:text="@string/nonValue"
                 android:textAlignment="center"
                 android:textColor="#EADDDD"
@@ -102,22 +100,36 @@
                 app:layout_constraintTop_toBottomOf="@+id/title_movie_detail" />
 
             <TextView
+                android:id="@+id/textView4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="30dp"
+                android:gravity="center"
+                android:text="@string/Actor"
+                android:textColor="@color/myBlack"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_profileCast_movieDetail" />
+
+            <TextView
                 android:id="@+id/txtview2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="30dp"
-                android:layout_marginBottom="9dp"
                 android:text="@string/releaseDate"
                 android:textAlignment="center"
                 android:textColor="#FFEB3B"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/release_detail_movie"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/txtview3" />
 
             <TextView
-                android:id="@+id/originalLanguage_movieDetail"
+                android:id="@+id/Language_movieDetail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/nonValue"
@@ -149,13 +161,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginBottom="9dp"
-                android:text="@string/originalLanguage"
+                android:text="@string/Language"
                 android:textAlignment="center"
                 android:textColor="#FFEB3B"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/originalLanguage_movieDetail"
                 app:layout_constraintEnd_toStartOf="@+id/txtview2"
                 app:layout_constraintStart_toEndOf="@+id/txtview3"
                 app:layout_constraintTop_toTopOf="@+id/txtview3" />
@@ -191,10 +201,10 @@
                 android:id="@+id/imageView5"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="40dp"
                 app:layout_constraintEnd_toEndOf="@+id/txtview3"
                 app:layout_constraintStart_toStartOf="@+id/txtview3"
-                app:layout_constraintTop_toBottomOf="@+id/rv_profileCast_movieDetail"
+                app:layout_constraintTop_toBottomOf="@+id/textView4"
                 app:srcCompat="@drawable/popularity" />
 
             <ImageView
@@ -224,13 +234,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/originalTitle_movieDetail" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -238,11 +248,15 @@
                 android:background="@drawable/card_shape"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/originalLanguage_movieDetail">
+                app:layout_constraintTop_toBottomOf="@+id/Language_movieDetail">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
                         android:id="@+id/imageView2"
@@ -370,7 +384,7 @@
                     </androidx.recyclerview.widget.RecyclerView>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

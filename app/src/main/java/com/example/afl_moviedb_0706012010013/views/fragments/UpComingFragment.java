@@ -239,26 +239,21 @@ public class UpComingFragment extends Fragment {
     public void setTOTAL_PAGE(long TOTAL_PAGE){
         this.TOTAL_PAGE=TOTAL_PAGE;
     }
-
     public long getCurrentPageUpComing(){
         return this.currentPage;
     }
-
     public long getTOTAL_PAGE(){
         return this.TOTAL_PAGE;
     }
-
     public long getMaxPageUpComing() {
         return this.MaxPage;
     }
     public void setMaxPageUpComing(long MaxPage){
         this.MaxPage=MaxPage;
     }
-
     public void setCurrentPageUpComing(){
         this.currentPage++;
     }
-
     private void setDataRV_listUpComing(List<UpComing.Results> upComing){
         rvAdapter_upComing.addAll(upComing);
     }
@@ -280,6 +275,7 @@ public class UpComingFragment extends Fragment {
         rvAdapter_nowPlaying_TrendingDay.setListTrendingDayMoviesAdapter(listTrendingDay);
         rv_trendingDayUpComing_Movies.setAdapter(rvAdapter_nowPlaying_TrendingDay);
     }
+
     private void setRV_UpComingMovies(){
         rvAdapter_upComing =new rvAdapter_upComing(getActivity());
         linearLayoutManagerRVUpcoming=new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);

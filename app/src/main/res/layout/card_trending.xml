@@ -14,8 +14,7 @@
         app:layout_constraintBottom_toTopOf="@id/card_title_trending"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/card_title_trending"
@@ -24,7 +23,7 @@
         android:layout_marginBottom="5dp"
         android:gravity="center"
         android:maxLines="1"
-        android:text="TextView"
+        android:text="@string/nonValue"
         android:textColor="#FFEB3B"
         android:textSize="10sp"
         android:textStyle="bold"

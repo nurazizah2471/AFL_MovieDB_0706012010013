@@ -86,8 +86,6 @@ public class NowPlayingFragment extends Fragment {
     private boolean isLastPage;
     private long TOTAL_PAGE;
     private long currentPage;
-
-    private String cek1, cek2, cek3, cek4, cek5;
     private long MaxPage=2;
 
     @Override
@@ -108,8 +106,6 @@ public class NowPlayingFragment extends Fragment {
         currentPage=PAGE_START;
         isLoading=false;
         isLastPage=false;
-
-        //cek1="Awalcurrent1:"+currentPage+" size1: "+rvAdapter_nowPlaying.getListNowPlaying().size();
 
         loadDataNowPlaying();
 
@@ -156,8 +152,6 @@ public class NowPlayingFragment extends Fragment {
 
     private void getData() {
 
-        //cek2 = "Beforegetdatacurrent2:" + getCurrentPage() + " size2: " + rvAdapter_nowPlaying.getListNowPlaying().size();
-
             if ((getCurrentPageNowPlaying() < getMaxPageNowPlaying() && rvAdapter_nowPlaying.getListNowPlaying().size() != 0) ||
                     (getCurrentPageNowPlaying() <= getMaxPageNowPlaying() && rvAdapter_nowPlaying.getListNowPlaying().size() == 0) ) {
 
@@ -177,7 +171,6 @@ public class NowPlayingFragment extends Fragment {
                 } else if((getCurrentPageNowPlaying() == getMaxPageNowPlaying() && rvAdapter_nowPlaying.getListNowPlaying().size() == 0)
                 ||  (getCurrentPageNowPlaying() == PAGE_START && rvAdapter_nowPlaying.getListNowPlaying().size() == 0)){
 
-                    //cek4 ="Pagestarnow"+PAGE_START+ "dataakhrstlhklik1or4current4:" + getCurrentPageNowPlaying() + " size4: " + rvAdapter_nowPlaying.getListNowPlaying().size();
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -187,15 +180,10 @@ public class NowPlayingFragment extends Fragment {
                     }, 300);
 
                 }
-
-                //cek3 = "afteradddtacurrent3:" + getCurrentPage() + " size3: " + rvAdapter_nowPlaying.getListNowPlaying().size();
             }  else {
-
                 rvAdapter_nowPlaying.removeLoadingFooter();
                 isLoading = false;
                 isLastPage = true;
-                cek5="yaaaMskakhrpge";
-
             }
     }
 
@@ -205,27 +193,21 @@ public class NowPlayingFragment extends Fragment {
 
             progressBar.setVisibility(View.GONE);
 
-            cek3="beforemaxpage"+getMaxPageNowPlaying();
-           setMaxPageNowPlaying(nowPlaying.getTotal_pages());
-            cek3="aftermaxpage"+getMaxPageNowPlaying();
-
+            setMaxPageNowPlaying(nowPlaying.getTotal_pages());
 
             setTOTAL_PAGE(nowPlaying.getResults().size());
 
             if(getCurrentPageNowPlaying() <= getMaxPageNowPlaying() && rvAdapter_nowPlaying.getListNowPlaying().size() == 0) {
 
                 setDataRV_listNowPlaying(nowPlaying.getResults());
-               // cek2 = "hh" + rvAdapter_nowPlaying.getListNowPlaying().size();
-                    if (getCurrentPageNowPlaying() <= getMaxPageNowPlaying()) {
 
+                    if (getCurrentPageNowPlaying() <= getMaxPageNowPlaying()) {
                         rvAdapter_nowPlaying.addLoadingFooter();
                     } else {
                         isLastPage = true;
                     }
 
             }else if (getCurrentPageNowPlaying() <= getMaxPageNowPlaying() && rvAdapter_nowPlaying.getListNowPlaying().size() != 0) {
-                cek2="pphh"+getCurrentPageNowPlaying();
-                //untuk ngapusobjekkosongfooter
 
                 rvAdapter_nowPlaying.removeLoadingFooter();
                 isLoading = false;
@@ -236,10 +218,8 @@ public class NowPlayingFragment extends Fragment {
                 }
 
                 else {
-                    //cek2="hend"+getCurrentPageNowPlaying();
                     isLastPage= true;
                 }
-
             }
         }
     };
@@ -299,6 +279,7 @@ public class NowPlayingFragment extends Fragment {
         rvAdapter_nowPlaying_TrendingDay.setListTrendingDayMoviesAdapter(listTrendingDay);
         rv_trendingDay_Movies.setAdapter(rvAdapter_nowPlaying_TrendingDay);
     }
+
     private void setRV_NowPlayingMovies(){
         rvAdapter_nowPlaying =new rvAdapter_nowPlaying(getActivity());
         linearLayoutManagerRVNowplaying=new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -348,15 +329,6 @@ public class NowPlayingFragment extends Fragment {
 
                 Navigation.findNavController(v).navigate(R.id.action_nowPlayingFragment_to_movieDetailFragment,bundle);
 
-            }
-        });
-
-        ItemClickSupport.addTo(rv_nowplaying_f).setOnItemLongClickListener(new ItemClickSupport.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClicked(RecyclerView recyclerView, int position, View v) {
-                //Toast.makeText(getActivity(),String.valueOf(currentPage)+"size:"+rvAdapter_nowPlaying.getListNowPlaying().size()
-                  //      +cek1+cek2+cek3+cek4+cek5, Toast.LENGTH_LONG).show();
-                return true;
             }
         });
     }

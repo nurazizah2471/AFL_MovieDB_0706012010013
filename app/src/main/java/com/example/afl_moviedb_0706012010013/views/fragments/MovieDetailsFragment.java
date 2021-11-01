@@ -3,7 +3,6 @@ package com.example.afl_moviedb_0706012010013.views.fragments;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -11,13 +10,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,10 +21,8 @@ import com.bumptech.glide.Glide;
 import com.example.afl_moviedb_0706012010013.R;
 import com.example.afl_moviedb_0706012010013.ViewModels.MovieViewModel;
 import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_genres;
-import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_nowPlaying;
 import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_peopleCreditMovie;
 import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_productioncompanies;
-import com.example.afl_moviedb_0706012010013.adapters.rvAdapter_upComing;
 import com.example.afl_moviedb_0706012010013.helpers.Const;
 import com.example.afl_moviedb_0706012010013.helpers.ItemClickSupport;
 import com.example.afl_moviedb_0706012010013.models.Credit;
@@ -82,7 +76,7 @@ public class MovieDetailsFragment extends Fragment {
     }
 
     private TextView title_movie_detail, release_detail_movie, popularity_detail_movie, voteAverage_movie_detail,
-            voteCount_movie_detail, overviewText_movieDetails, originalTitle_movieDetail, originalLanguage_movieDetail,
+            voteCount_movie_detail, overviewText_movieDetails, originalTitle_movieDetail, Language_movieDetail,
             tagline_movie_detail;
     private ImageView posterPath_movie_detail, bc_Path;
     private RecyclerView rv_genre_movieDetail, rv_productioncompanies_movieDetail, rv_profileCast_movieDetail;
@@ -92,9 +86,7 @@ public class MovieDetailsFragment extends Fragment {
     private rvAdapter_genres adapter_genres;
     private rvAdapter_productioncompanies adapterProductionCompanies;
     private rvAdapter_peopleCreditMovie adapterPeopleCreditMovie;
-
-    private rvAdapter_nowPlaying rvAdapter_nowPlaying;
-    private rvAdapter_upComing rvAdapter_upComing;
+    private String KeepLanguage = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -156,7 +148,7 @@ public class MovieDetailsFragment extends Fragment {
         posterPath_movie_detail=view.findViewById(R.id.posterPath_movie_detail);
         overviewText_movieDetails=view.findViewById(R.id.overviewText_movieDetails);
         tagline_movie_detail=view.findViewById(R.id.tagline_movie_detail);
-        originalLanguage_movieDetail=view.findViewById(R.id.originalLanguage_movieDetail);
+        Language_movieDetail=view.findViewById(R.id.Language_movieDetail);
         bc_Path=view.findViewById(R.id.bc_Path);
         originalTitle_movieDetail=view.findViewById(R.id.originalTitle_movieDetail);
         rv_genre_movieDetail=view.findViewById(R.id.rv_genre_movieDetail);
@@ -174,8 +166,17 @@ public class MovieDetailsFragment extends Fragment {
         voteAverage_movie_detail.setText(String.valueOf(movies.getVote_average()));
         voteCount_movie_detail.setText("from "+String.valueOf(movies.getVote_count())+" Peoples");
         overviewText_movieDetails.setText(movies.getOverview());
-        originalTitle_movieDetail.setText("Original Title: "+movies.getOriginal_title());
-        originalLanguage_movieDetail.setText(movies.getOriginal_language());
+        originalTitle_movieDetail.setText(movies.getOriginal_title());
+
+        for(int i=0;i<movies.getSpoken_languages().size();i++) {
+            KeepLanguage += movies.getSpoken_languages().get(i).getName();
+
+            if(i<movies.getSpoken_languages().size()-1){
+                KeepLanguage += ", ";
+            }
+        }
+
+        Language_movieDetail.setText(KeepLanguage);
         tagline_movie_detail.setText(movies.getTagline());
     }
 

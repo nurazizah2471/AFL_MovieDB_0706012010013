@@ -7,11 +7,14 @@
     <string name="voteCount">Rating</string>
     <string name="voteAverage">Vote Average</string>
     <string name="originalTitle">Original Title</string>
-    <string name="originalLanguage">Original Language</string>
+    <string name="Language">Language</string>
     <string name="nonValue">-</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="now_playing">Now Playing</string>
     <string name="up_coming">Up Coming</string>
     <string name="productioncompanies">Production Companies</string>
+    <string name="Actor">Actor</string>
+    <string name="keterangan_most_trending_week">Most Trending in this Week</string>
+    <string name="keterangan_most_trending_day">Most Trending in this Day</string>
 </resources>
