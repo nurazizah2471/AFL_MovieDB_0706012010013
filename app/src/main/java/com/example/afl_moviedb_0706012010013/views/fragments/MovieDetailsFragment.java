@@ -134,7 +134,7 @@ public class MovieDetailsFragment extends Fragment {
                 public void run() {
                     progressBar.setVisibility(View.GONE); // Hide Progress bar
                 }
-            }, 200);
+            }, 1800);
             mainContent.setVisibility(View.VISIBLE);
         }
     };

@@ -1,6 +1,8 @@
 package com.example.afl_moviedb_0706012010013.views.activities;
 
 import android.os.Bundle;
+import android.view.animation.Animation;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -39,6 +41,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
+
         return nav_fragment_main_menu.getNavController().navigateUp()||super.onSupportNavigateUp();
     }
 
