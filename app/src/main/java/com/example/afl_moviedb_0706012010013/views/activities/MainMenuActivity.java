@@ -41,7 +41,6 @@ public class MainMenuActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-
         return nav_fragment_main_menu.getNavController().navigateUp()||super.onSupportNavigateUp();
     }
 
