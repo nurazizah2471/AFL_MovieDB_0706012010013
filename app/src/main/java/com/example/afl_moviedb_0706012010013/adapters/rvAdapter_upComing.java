@@ -91,6 +91,7 @@ public class rvAdapter_upComing extends RecyclerView.Adapter<rvAdapter_upComing.
                 }
 
                 holder.releasedAt_upcoming.setText("Released At: " + released);
+
                 if(resultUpComing.getPopularity()>0) {
                     holder.popularity_upcoming.setText(resultUpComing.getPopularity() + " Popular");
                 }
