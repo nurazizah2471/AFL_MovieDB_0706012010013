@@ -96,8 +96,18 @@ public class rvAdapter_nowPlaying extends RecyclerView.Adapter<rvAdapter_nowPlay
                     holder.imagePoster_nowplaying.setImageResource(R.drawable.photo);
                 }
 
-                holder.releasedAt_nowplaying.setText("Released At: " + resultNowPlaying.getRelease_date());
-                holder.popularity_nowplaying.setText(resultNowPlaying.getPopularity()+" Popular");
+                String released="";
+
+                if(resultNowPlaying.getRelease_date()!=null) {
+                    released+=resultNowPlaying.getRelease_date();
+                }else {
+                    released+="-";
+                }
+                holder.releasedAt_nowplaying.setText("Released At: " +released);
+
+                if(resultNowPlaying.getPopularity()>0) {
+                    holder.popularity_nowplaying.setText(resultNowPlaying.getPopularity() + " Popular");
+                }
 
                 break;
 

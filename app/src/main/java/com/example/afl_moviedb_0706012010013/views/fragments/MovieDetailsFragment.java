@@ -77,7 +77,7 @@ public class MovieDetailsFragment extends Fragment {
 
     private TextView title_movie_detail, release_detail_movie, popularity_detail_movie, voteAverage_movie_detail,
             voteCount_movie_detail, overviewText_movieDetails, originalTitle_movieDetail, Language_movieDetail,
-            tagline_movie_detail;
+            tagline_movie_detail, keteranganActor_movie_detail, keteranganGenre_movie_detail, keteranganPc_movie_detail;
     private ImageView posterPath_movie_detail, bc_Path;
     private RecyclerView rv_genre_movieDetail, rv_productioncompanies_movieDetail, rv_profileCast_movieDetail;
     private MovieViewModel movieViewModel;
@@ -156,28 +156,47 @@ public class MovieDetailsFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar_MoviesDetailsFragment); // Get ProgressBar reference
         mainContent = view.findViewById(R.id.ConstraintLayout_MovieDetailsFragment);
         rv_profileCast_movieDetail=view.findViewById(R.id.rv_profileCast_movieDetail);
+        keteranganActor_movie_detail=view.findViewById(R.id.keteranganActor_movie_detail);
+        keteranganGenre_movie_detail=view.findViewById(R.id.keteranganGenre_movie_detail);
+        keteranganPc_movie_detail=view.findViewById(R.id.keteranganPc_movie_detail);
 
         movieViewModel=new ViewModelProvider(getActivity()).get(MovieViewModel.class);
     }
     private void setTextView(Movies movies){
-        title_movie_detail.setText(movies.getTitle());
-        release_detail_movie.setText(movies.getRelease_date());
-        popularity_detail_movie.setText(String.valueOf(movies.getPopularity()));
-        voteAverage_movie_detail.setText(String.valueOf(movies.getVote_average()));
-        voteCount_movie_detail.setText("from "+String.valueOf(movies.getVote_count())+" Peoples");
-        overviewText_movieDetails.setText(movies.getOverview());
-        originalTitle_movieDetail.setText(movies.getOriginal_title());
-
-        for(int i=0;i<movies.getSpoken_languages().size();i++) {
-            KeepLanguage += movies.getSpoken_languages().get(i).getName();
-
-            if(i<movies.getSpoken_languages().size()-1){
-                KeepLanguage += ", ";
-            }
+        if(movies.getTitle()!=null) {
+            title_movie_detail.setText(movies.getTitle());
         }
+        if(movies.getRelease_date()!=null) {
+            release_detail_movie.setText(movies.getRelease_date());
+        }
+        if(movies.getPopularity()>0) {
+            popularity_detail_movie.setText(String.valueOf(movies.getPopularity()));
+        }
+        if(movies.getVote_average()>0) {
+            voteAverage_movie_detail.setText(String.valueOf(movies.getVote_average()));
+        }
+        if(movies.getVote_count()>0) {
+            voteCount_movie_detail.setText("from " + String.valueOf(movies.getVote_count()) + " Peoples");
+        }
+        if(movies.getOverview()!=null) {
+            overviewText_movieDetails.setText(movies.getOverview());
+        }
+        if(movies.getOriginal_title()!=null) {
+            originalTitle_movieDetail.setText(movies.getOriginal_title());
+        }
+        if(movies.getSpoken_languages().size()>0) {
+            for (int i = 0; i < movies.getSpoken_languages().size(); i++) {
+                KeepLanguage += movies.getSpoken_languages().get(i).getName();
 
-        Language_movieDetail.setText(KeepLanguage);
-        tagline_movie_detail.setText(movies.getTagline());
+                if (i < movies.getSpoken_languages().size() - 1) {
+                    KeepLanguage += ", ";
+                }
+            }
+            Language_movieDetail.setText(KeepLanguage);
+        }
+        if(movies.getTagline()!=null) {
+            tagline_movie_detail.setText(movies.getTagline());
+        }
     }
 
     private void setImageView(Movies movies){
@@ -194,7 +213,7 @@ public class MovieDetailsFragment extends Fragment {
                     .load(Const.IMAGE_PATH + movies.getBackdrop_path())
                     .into(bc_Path);
         }else{
-            bc_Path.setImageResource(R.drawable.photo);
+            bc_Path.setImageResource(R.drawable.bcdefault);
         }
     }
 
@@ -205,28 +224,43 @@ public class MovieDetailsFragment extends Fragment {
     }
 
     private void setRv_profileCast_movieDetail(Credit credit){
-        rv_profileCast_movieDetail.setLayoutManager(new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.HORIZONTAL, false));
-        adapterPeopleCreditMovie = new rvAdapter_peopleCreditMovie(getActivity());
-        adapterPeopleCreditMovie.setListpeopleCreditMovieAdapter(credit.getCast());
-        rv_profileCast_movieDetail.setAdapter(adapterPeopleCreditMovie);
+        if(credit.getCast().size()>0) {
+            keteranganActor_movie_detail.setVisibility(View.VISIBLE);
+            rv_profileCast_movieDetail.setLayoutManager(new LinearLayoutManager(getActivity(),
+                    LinearLayoutManager.HORIZONTAL, false));
+            adapterPeopleCreditMovie = new rvAdapter_peopleCreditMovie(getActivity());
+            adapterPeopleCreditMovie.setListpeopleCreditMovieAdapter(credit.getCast());
+            rv_profileCast_movieDetail.setAdapter(adapterPeopleCreditMovie);
+        }else{
+            keteranganActor_movie_detail.setVisibility(View.GONE);
+        }
     }
 
 
     private void setRV_Genre(Movies movies) {
-        rv_genre_movieDetail.setLayoutManager(new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.HORIZONTAL, false));
-        adapter_genres = new rvAdapter_genres(getActivity());
-        adapter_genres.setListGenresAdapter(movies.getGenres());
-        rv_genre_movieDetail.setAdapter(adapter_genres);
+        if(movies.getGenres().size()>0) {
+            keteranganGenre_movie_detail.setVisibility(View.VISIBLE);
+            rv_genre_movieDetail.setLayoutManager(new LinearLayoutManager(getActivity(),
+                    LinearLayoutManager.HORIZONTAL, false));
+            adapter_genres = new rvAdapter_genres(getActivity());
+            adapter_genres.setListGenresAdapter(movies.getGenres());
+            rv_genre_movieDetail.setAdapter(adapter_genres);
+        }else{
+            keteranganGenre_movie_detail.setVisibility(View.GONE);
+        }
     }
 
     private void setRV_ProductionCompanies(Movies movies) {
-        rv_productioncompanies_movieDetail.setLayoutManager(new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.HORIZONTAL, false));
-        adapterProductionCompanies = new rvAdapter_productioncompanies(getActivity());
-        adapterProductionCompanies.setListproductioncompaniesAdapter(movies.getProduction_companies());
-        rv_productioncompanies_movieDetail.setAdapter(adapterProductionCompanies);
+        if(movies.getProduction_companies().size()>0) {
+            keteranganPc_movie_detail.setVisibility(View.VISIBLE);
+            rv_productioncompanies_movieDetail.setLayoutManager(new LinearLayoutManager(getActivity(),
+                    LinearLayoutManager.HORIZONTAL, false));
+            adapterProductionCompanies = new rvAdapter_productioncompanies(getActivity());
+            adapterProductionCompanies.setListproductioncompaniesAdapter(movies.getProduction_companies());
+            rv_productioncompanies_movieDetail.setAdapter(adapterProductionCompanies);
+        }else{
+            keteranganPc_movie_detail.setVisibility(View.GONE);
+        }
     }
 
     private void addItemClickSupport(){

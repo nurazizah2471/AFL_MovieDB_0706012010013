@@ -17,4 +17,5 @@
     <string name="Actor">Actor</string>
     <string name="keterangan_most_trending_week">Most Trending in this Week</string>
     <string name="keterangan_most_trending_day">Most Trending in this Day</string>
+    <string name="NonValueAngka">0</string>
 </resources>

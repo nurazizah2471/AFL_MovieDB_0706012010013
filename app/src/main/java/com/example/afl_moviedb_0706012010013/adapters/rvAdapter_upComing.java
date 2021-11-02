@@ -82,8 +82,18 @@ public class rvAdapter_upComing extends RecyclerView.Adapter<rvAdapter_upComing.
                     holder.imagePoster_upcoming.setImageResource(R.drawable.photo);
                 }
 
-                holder.releasedAt_upcoming.setText("Released At: " + resultUpComing.getRelease_date());
-                holder.popularity_upcoming.setText(resultUpComing.getPopularity()+" Popular");
+                String released="";
+
+                if(resultUpComing.getRelease_date()!=null) {
+                    released+=resultUpComing.getRelease_date();
+                }else {
+                    released+="-";
+                }
+
+                holder.releasedAt_upcoming.setText("Released At: " + released);
+                if(resultUpComing.getPopularity()>0) {
+                    holder.popularity_upcoming.setText(resultUpComing.getPopularity() + " Popular");
+                }
                 break;
 
             case LOADING:
