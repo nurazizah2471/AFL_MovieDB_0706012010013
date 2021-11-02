@@ -17,7 +17,7 @@ public interface ApiEndPoint {
     Call<Movies> getMoviesById(
             @Path("movie_id") int movieId,
             @Query("api_key") String apiKey
-        );
+    );
 
     @GET("movie/now_playing")
     Call<NowPlaying> getNowPlaying(
@@ -37,10 +37,10 @@ public interface ApiEndPoint {
             @Path("time_window") String timeWindow,
             @Query("api_key") String apiKey
     );
+
     @GET("movie/{movie_id}/credits")
     Call<Credit> getMoviesCredit(
             @Path("movie_id") int movieId,
             @Query("api_key") String apiKey
     );
-
 }
