@@ -31,8 +31,6 @@ public class rvAdapter_nowPlaying extends RecyclerView.Adapter<rvAdapter_nowPlay
         return this.listNowPlaying;
     }
 
-
-
     public void setListNowPlayingAdapter(List<NowPlaying.Results> listNowPlaying){
         this.listNowPlaying=listNowPlaying;
     }
@@ -41,7 +39,6 @@ public class rvAdapter_nowPlaying extends RecyclerView.Adapter<rvAdapter_nowPlay
         for (int p=0;p<listNowPlaying.size();p++){
             listNowPlaying.remove(p);
         }
-
     }
 
     public rvAdapter_nowPlaying(Context context) {
@@ -63,6 +60,7 @@ public class rvAdapter_nowPlaying extends RecyclerView.Adapter<rvAdapter_nowPlay
                 viewHolder=new LoadingVH(view);
                 break;
         }
+
         return viewHolder;
     }
 
@@ -75,10 +73,6 @@ public class rvAdapter_nowPlaying extends RecyclerView.Adapter<rvAdapter_nowPlay
 
     @Override
     public void onBindViewHolder(@NonNull NowPlayingHolder holder, int position) {
-
-
-
-
 
         switch (getItemViewType(position)){
             case ITEM:
@@ -108,7 +102,6 @@ public class rvAdapter_nowPlaying extends RecyclerView.Adapter<rvAdapter_nowPlay
                 if(resultNowPlaying.getPopularity()>0) {
                     holder.popularity_nowplaying.setText(resultNowPlaying.getPopularity() + " Popular");
                 }
-
                 break;
 
             case LOADING:
@@ -150,7 +143,6 @@ public class rvAdapter_nowPlaying extends RecyclerView.Adapter<rvAdapter_nowPlay
         while(getItemCount()>0){
             remove(getItem(0));
         }
-
         notifyDataSetChanged();
     }
 
