@@ -44,7 +44,6 @@ public class rvAdapter_peopleCreditMovie extends RecyclerView.Adapter<rvAdapter_
     public void onBindViewHolder(@NonNull rvAdapter_peopleCreditMovieHolder holder, int position) {
         final Credit.Cast resultsPeopleCastMovie = getListpeopleCreditMovie().get(position);
 
-
         if(resultsPeopleCastMovie.getProfile_path()!=null) {
             Glide.with(context)
                     .load(Const.IMAGE_PATH + resultsPeopleCastMovie.getProfile_path())
