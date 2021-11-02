@@ -59,7 +59,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-
                 android:indeterminate="true"
                 android:indeterminateDrawable="@drawable/progressdialogshape"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -99,7 +98,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView">
-
             </androidx.recyclerview.widget.RecyclerView>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -110,9 +108,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider3">
-
             </androidx.recyclerview.widget.RecyclerView>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
