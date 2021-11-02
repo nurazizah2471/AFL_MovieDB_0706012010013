@@ -20,7 +20,7 @@ public class rvAdapter_genres extends RecyclerView.Adapter<rvAdapter_genres
     private List<Movies.Genres> listGenres;
     private Context context;
 
-    private List<Movies.Genres> getListGenres(){
+    public List<Movies.Genres> getListGenres(){
         return listGenres;
     }
 
