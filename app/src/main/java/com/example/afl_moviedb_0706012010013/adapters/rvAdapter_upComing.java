@@ -74,9 +74,13 @@ public class rvAdapter_upComing extends RecyclerView.Adapter<rvAdapter_upComing.
                 holder.title_upcoming.setText(resultUpComing.getTitle());
                 holder.rating_upcoming.setText(String.valueOf(resultUpComing.getVote_average()));
 
-                Glide.with(context)
-                        .load(Const.IMAGE_PATH +resultUpComing.getPoster_path())
-                        .into(holder.imagePoster_upcoming);
+                if(resultUpComing.getPoster_path()!=null) {
+                    Glide.with(context)
+                            .load(Const.IMAGE_PATH + resultUpComing.getPoster_path())
+                            .into(holder.imagePoster_upcoming);
+                }else {
+                    holder.imagePoster_upcoming.setImageResource(R.drawable.photo);
+                }
 
                 holder.releasedAt_upcoming.setText("Released At: " + resultUpComing.getRelease_date());
                 holder.popularity_upcoming.setText(resultUpComing.getPopularity()+" Popular");

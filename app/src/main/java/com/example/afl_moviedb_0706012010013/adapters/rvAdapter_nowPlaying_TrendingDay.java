@@ -45,9 +45,13 @@ public class rvAdapter_nowPlaying_TrendingDay extends RecyclerView.Adapter<rvAda
     public void onBindViewHolder(@NonNull rvAdapter_nowPlaying_TrendingDayHolder holder, int position) {
         final TrendingMovies.Results resultsTrendingDayMovies = getListTrendingDayMovies().get(position);
 
-        Glide.with(context)
-                .load(Const.IMAGE_PATH + resultsTrendingDayMovies.getPoster_path())
-                .into(holder.card_poster_trending);
+        if(resultsTrendingDayMovies.getPoster_path()!=null) {
+            Glide.with(context)
+                    .load(Const.IMAGE_PATH + resultsTrendingDayMovies.getPoster_path())
+                    .into(holder.card_poster_trending);
+        }else{
+            holder.card_poster_trending.setImageResource(R.drawable.photo);
+        }
 
         if(resultsTrendingDayMovies.getTitle().length()>10) {
             holder.card_title_trending.setText(resultsTrendingDayMovies.getTitle().subSequence(0, 10)+"...");

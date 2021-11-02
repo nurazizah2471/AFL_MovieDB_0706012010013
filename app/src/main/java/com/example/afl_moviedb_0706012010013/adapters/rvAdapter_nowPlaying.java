@@ -88,9 +88,13 @@ public class rvAdapter_nowPlaying extends RecyclerView.Adapter<rvAdapter_nowPlay
                 holder.title_nowplaying.setText(resultNowPlaying.getTitle());
                 holder.rating_nowplaying.setText(String.valueOf(resultNowPlaying.getVote_average()));
 
-                Glide.with(context)
-                        .load(Const.IMAGE_PATH +resultNowPlaying.getPoster_path())
-                        .into(holder.imagePoster_nowplaying);
+                if(resultNowPlaying.getPoster_path()!=null) {
+                    Glide.with(context)
+                            .load(Const.IMAGE_PATH + resultNowPlaying.getPoster_path())
+                            .into(holder.imagePoster_nowplaying);
+                }else{
+                    holder.imagePoster_nowplaying.setImageResource(R.drawable.photo);
+                }
 
                 holder.releasedAt_nowplaying.setText("Released At: " + resultNowPlaying.getRelease_date());
                 holder.popularity_nowplaying.setText(resultNowPlaying.getPopularity()+" Popular");

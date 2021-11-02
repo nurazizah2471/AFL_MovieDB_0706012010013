@@ -134,7 +134,7 @@ public class MovieDetailsFragment extends Fragment {
                 public void run() {
                     progressBar.setVisibility(View.GONE); // Hide Progress bar
                 }
-            }, 1800);
+            }, 300);
             mainContent.setVisibility(View.VISIBLE);
         }
     };
@@ -181,13 +181,21 @@ public class MovieDetailsFragment extends Fragment {
     }
 
     private void setImageView(Movies movies){
-        Glide.with(getActivity())
-                .load(Const.IMAGE_PATH +movies.getPoster_path())
-                .into(posterPath_movie_detail);
+        if(movies.getPoster_path()!=null) {
+            Glide.with(getActivity())
+                    .load(Const.IMAGE_PATH + movies.getPoster_path())
+                    .into(posterPath_movie_detail);
+        } else{
+            posterPath_movie_detail.setImageResource(R.drawable.photo);
+        }
 
-        Glide.with(getActivity())
-                .load(Const.IMAGE_PATH +movies.getBackdrop_path())
-                .into(bc_Path);
+        if(movies.getBackdrop_path()!=null) {
+            Glide.with(getActivity())
+                    .load(Const.IMAGE_PATH + movies.getBackdrop_path())
+                    .into(bc_Path);
+        }else{
+            bc_Path.setImageResource(R.drawable.photo);
+        }
     }
 
     private void setRV(Movies movies){
